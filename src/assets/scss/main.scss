@@ -1,0 +1,12 @@
+@import 'fonts';
+@import 'variables';
+@import './utils/normalize';
+
+* {
+    box-sizing: border-box;
+}
+
+//     EXAMPLE
+// paths to files '../img/bg.jpg'
+
+@import 'media';
