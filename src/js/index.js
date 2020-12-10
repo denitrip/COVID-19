@@ -1,4 +1,8 @@
+// Style
 import '../assets/scss/main.scss';
+
+// Components
+import './deaths_stats';
 
 // EXAMPLE
 // tablesort lib
