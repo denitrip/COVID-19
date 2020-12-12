@@ -1,4 +1,5 @@
 import '../assets/scss/main.scss';
+import './header';
 
 // EXAMPLE
 // tablesort lib
