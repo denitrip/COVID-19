@@ -1,16 +1,20 @@
 const navOpenedClass = 'nav-opened';
 const menu = 'nav';
+const navElementClass = 'nav-element';
+const toggleNavId = 'toggle-nav';
 const hamburgerToggleClass = '.hamburger-toggle';
+const toggleNavLabel = 'toggle-nav-label';
+const hamburgerMenuId = 'hamburger-menu';
 
 function closeMenu() {
-    const nav = document.getElementById('nav');
-    const toggleNav = document.getElementById('toggle-nav');
+    const nav = document.getElementById(menu);
+    const toggleNav = document.getElementById(toggleNavId);
     nav.classList.remove(navOpenedClass);
     toggleNav.checked = false;
 }
 
 function createHamburgerMenu() {
-    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const hamburgerMenu = document.getElementById(hamburgerMenuId);
     hamburgerMenu.innerHTML =
         `<div class="header-wrapper">
             <h1>COVID-19 Global Cases by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins (JHU)</h1>
@@ -34,12 +38,12 @@ function createHamburgerMenu() {
         }
     });
 
-    document.getElementById('toggle-nav-label').addEventListener('click', () => {
-        const nav = document.getElementById('nav');
+    document.getElementById(toggleNavLabel).addEventListener('click', () => {
+        const nav = document.getElementById(menu);
         nav.classList.toggle(navOpenedClass);
     });
 
-    Array.from(document.getElementsByClassName('nav-element')).forEach((element) => {
+    Array.from(document.getElementsByClassName(navElementClass)).forEach((element) => {
         element.addEventListener('click', () => {
             closeMenu();
         });

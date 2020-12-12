@@ -33,24 +33,24 @@
 
 #toggle-nav {
     display: none;
-}
 
-#toggle-nav:checked + .hamburger .top {
-    transform: rotate(-45deg);
-    margin-top: 5px;
-    background-color: $color-light-grey;
-}
-
-#toggle-nav:checked + .hamburger .bottom {
-    opacity: 0;
-    transform: rotate(45deg);
-    background-color: $color-light-grey;
-}
-
-#toggle-nav:checked + .hamburger .meat {
-    transform: rotate(45deg);
-    margin-top: -3px;
-    background-color: $color-light-grey;
+    &:checked {
+        + .hamburger {
+            background-color: $color-light-grey;
+            .top {
+                transform: rotate(-45deg);
+                margin-top: 5px;
+            }
+            .bottom {
+                opacity: 0;
+                transform: rotate(45deg);
+                }
+            .meat {
+                transform: rotate(45deg);
+                margin-top: -3px;
+            }
+        }
+    }
 }
 
 nav {
@@ -79,6 +79,10 @@ nav {
     margin: 0 6px 0 30px;
     border-radius: 30px;
     text-transform: capitalize;
+
+    &:hover {
+    background: $color-transparent-white;
+    }
 }
 
 a {
@@ -89,10 +93,6 @@ a {
 
 a {
     text-decoration: none;
-}
-
-.nav-element:hover {
-    background: $color-hover;
 }
 
 .nav-list {
