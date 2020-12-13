@@ -7,6 +7,9 @@
 
 const globalDeathsURL = 'https://api.covid19api.com/summary';
 const USdeathsURL = 'https://api.covidtracking.com/v1/states/current.json';
+const totalDeathsUl = '.total_deaths_list ul';
+const totalDeathsHeading = '.total_deaths';
+const USdeathsUl = '.us_deaths_list ul';
 
 setGlobalStats(globalDeathsURL);
 setUSstats(USdeathsURL);
@@ -21,19 +24,19 @@ function setGlobalStats(url) {
 
             let sum = 0;
 
-            for (let i = 0; i < result.Countries.length; i += 1) {
-                sum += result.Countries[i].TotalDeaths;
-                const globalDeathsUl = document.querySelector('.total_deaths_list ul');
+            result.Countries.forEach((country) => {
+                sum += country.TotalDeaths;
+                const globalDeaths = document.querySelector(totalDeathsUl);
                 let itemLi = document.createElement('li');
                 itemLi.innerHTML = `<span>
-                                        <span class='stats_value'>${result.Countries[i].TotalDeaths}</span> deaths
+                                        <span class='stats_value'>${country.TotalDeaths}</span> deaths
                                     </span>
-                                    <span class='stats_value'>${result.Countries[i].Country}</span>`;
-                globalDeathsUl.append(itemLi);
+                                    <span class='stats_value'>${country.Country}</span>`;
+                globalDeaths.append(itemLi);
 
-                const totalDeathsHeading = document.querySelector('.total_deaths');
-                totalDeathsHeading.innerHTML = `${sum}`;
-            }
+                const totalDeaths = document.querySelector(totalDeathsHeading);
+                totalDeaths.innerHTML = `${sum}`;
+            });
         });
 }
 
@@ -45,15 +48,15 @@ function setUSstats(url) {
                 return b.death - a.death;
             });
 
-            for (let i = 0; i < result.length; i += 1) {
-                const USdeathsUl = document.querySelector('.us_deaths_list ul');
+            result.forEach((item) => {
+                const USdeaths = document.querySelector(USdeathsUl);
                 let itemLi = document.createElement('li');
                 itemLi.innerHTML = `<span>
-                                        <span class='stats_value'>${result[i].death} <span>deaths</span></span>
-                                    </span>
-                                    <span class='stats_value'>${result[i].recovered} <span>recovered</span></span>
-                                    <span class='stats_value'>${result[i].state} US</span>`;
-                USdeathsUl.append(itemLi);
-            }
+                                            <span class='stats_value'>${item.death} <span>deaths</span></span>
+                                        </span>
+                                        <span class='stats_value'>${item.recovered} <span>recovered</span></span>
+                                        <span class='stats_value'>${item.state} US</span>`;
+                USdeaths.append(itemLi);
+            });
         });
 }
