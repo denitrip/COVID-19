@@ -5,6 +5,9 @@
 @import './layouts/grid';
 @import './header/header';
 
+// Components
+@import './components/deaths_stats.scss';
+
 * {
     box-sizing: border-box;
 }
