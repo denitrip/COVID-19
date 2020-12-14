@@ -4,6 +4,7 @@ import './header';
 
 // Components
 import './deaths_stats';
+import './global_cases';
 
 // EXAMPLE
 // tablesort lib

@@ -11,14 +11,14 @@ const totalDeathsUl = '.total_deaths_list ul';
 const totalDeathsHeading = '.total_deaths';
 const USdeathsUl = '.us_deaths_list ul';
 
-setGlobalStats(globalDeathsURL);
+setGlobalDeaths(globalDeathsURL);
 setUSstats(USdeathsURL);
 
-function setGlobalStats(url) {
+function setGlobalDeaths(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
-            result.Countries.sort(function (a, b) {
+            result.Countries.sort((a, b) => {
                 return b.TotalDeaths - a.TotalDeaths;
             });
 
@@ -29,13 +29,13 @@ function setGlobalStats(url) {
                 const globalDeaths = document.querySelector(totalDeathsUl);
                 let itemLi = document.createElement('li');
                 itemLi.innerHTML = `<span>
-                                        <span class='stats_value'>${country.TotalDeaths}</span> deaths
+                                        <span class='stats_value'>${country.TotalDeaths.toLocaleString()}</span> deaths
                                     </span>
                                     <span class='stats_value'>${country.Country}</span>`;
                 globalDeaths.append(itemLi);
 
                 const totalDeaths = document.querySelector(totalDeathsHeading);
-                totalDeaths.innerHTML = `${sum}`;
+                totalDeaths.innerHTML = `${sum.toLocaleString()}`;
             });
         });
 }
@@ -44,17 +44,20 @@ function setUSstats(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
-            result.sort(function (a, b) {
+            result.sort((a, b) => {
                 return b.death - a.death;
             });
 
             result.forEach((item) => {
                 const USdeaths = document.querySelector(USdeathsUl);
                 let itemLi = document.createElement('li');
+                if (!item.recovered) {
+                    item.recovered = 'no data';
+                }
                 itemLi.innerHTML = `<span>
-                                            <span class='stats_value'>${item.death} <span>deaths</span></span>
+                                            <span class='stats_value'>${item.death.toLocaleString()} <span>deaths</span></span>
                                         </span>
-                                        <span class='stats_value'>${item.recovered} <span>recovered</span></span>
+                                        <span class='stats_value'>${item.recovered.toLocaleString()} <span>recovered</span></span>
                                         <span class='stats_value'>${item.state} US</span>`;
                 USdeaths.append(itemLi);
             });
