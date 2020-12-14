@@ -12,7 +12,7 @@ function setGlobalCases(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
-            result.Countries.sort(function (a, b) {
+            result.Countries.sort((a, b) => {
                 return b.TotalConfirmed - a.TotalConfirmed;
             });
 

@@ -18,7 +18,7 @@ function setGlobalDeaths(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
-            result.Countries.sort(function (a, b) {
+            result.Countries.sort((a, b) => {
                 return b.TotalDeaths - a.TotalDeaths;
             });
 
@@ -44,14 +44,14 @@ function setUSstats(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
-            result.sort(function (a, b) {
+            result.sort((a, b) => {
                 return b.death - a.death;
             });
 
             result.forEach((item) => {
                 const USdeaths = document.querySelector(USdeathsUl);
                 let itemLi = document.createElement('li');
-                if (item.recovered === null) {
+                if (!item.recovered) {
                     item.recovered = 'no data';
                 }
                 itemLi.innerHTML = `<span>
