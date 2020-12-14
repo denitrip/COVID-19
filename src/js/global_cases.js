@@ -1,8 +1,4 @@
-//https://api.covid19api.com/summary
-//https://api.covid19api.com/live/country/united-states // all recovered 0 ...
-//https://api.covidtracking.com/v1/states/current.json
-
-const globalCasesURL = 'https://api.covid19api.com/summary';
+const globalCasesURL = 'https://disease.sh/v3/covid-19/countries?sort=cases';
 const totalCasesUl = '.total_cases_list ul';
 const totalCasesHeading = '.total_cases';
 
@@ -12,20 +8,16 @@ function setGlobalCases(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
-            result.Countries.sort((a, b) => {
-                return b.TotalConfirmed - a.TotalConfirmed;
-            });
-
             let sum = 0;
 
-            result.Countries.forEach((country) => {
-                sum += country.TotalConfirmed;
+            result.forEach((item) => {
+                sum += item.cases;
                 const globalCases = document.querySelector(totalCasesUl);
                 let itemLi = document.createElement('li');
                 itemLi.innerHTML = `<span>
-                                        <span class='stats_value'>${country.TotalConfirmed.toLocaleString()}</span>
+                                        <span class='stats_value'>${item.cases.toLocaleString()}</span>
                                     </span>
-                                    <span>${country.Country}</span>`;
+                                    <span>${item.country}</span>`;
                 globalCases.append(itemLi);
 
                 const totalCases = document.querySelector(totalCasesHeading);
