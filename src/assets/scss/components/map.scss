@@ -1,0 +1,235 @@
+.visually-hidden {
+	position: absolute;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	padding:0;
+	border:0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}
+
+.map {
+	position: relative;
+}
+
+#map {
+  margin: 0;
+  height: 500px; // temporary
+  width: 100%;
+	text-align: left;
+	background-color: $color-swamp;
+}
+
+.map__popup {
+	display: none;
+	position: absolute;
+	height: auto;
+	padding: 15px 45px 15px 30px;
+	box-sizing: border-box;
+	text-align: left;
+	color: $color-light-grey;
+	background-color: $color-dark-grey;
+	border: 1px solid #404040;
+	z-index: 99;
+
+	&.active {
+		display: block;
+	}
+}
+
+.map__title {
+	margin: 0 0 10px;
+	font-size: 12px;
+}
+
+.map__subtitle {
+	margin: 0 0 10px;
+	font-size: 12px;
+}
+
+.map__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		margin-bottom: 5px;
+	}
+}
+
+.map__button-close {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	background-color: transparent;
+	color: $color-light-grey;
+	border: none;
+	transition: all .5s ease-out;
+
+	svg {
+		fill: currentColor;
+	}
+
+	&:hover svg,
+	&:focus svg {
+		fill: $color-dodger-blue;
+	}
+}
+
+.map__numbers {
+	font-weight: 900;
+
+	&--death {
+		color: $color-punch;
+	}
+}
+
+//	stats
+.map-stats {
+	width: 200px;
+	top: 10px;
+	left: 10px;
+}
+
+// legend
+.map-legend {
+	top: 52px;
+	right: 10px;
+}
+
+.map-legend__list li {
+	display: flex;
+	align-items: center;
+}
+
+.map-legend__point {
+	position: relative;
+	width: 35px;
+	height: 20px;
+
+	&::before {
+		content: '';
+		position: absolute;
+		left: 0%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		border-radius: 100%;
+		background-color: rgba($color-punch, 0.8);
+	}
+}
+
+.map-legend__point[data-index='1']::before  {
+	width: 11px;
+	height: 11px;
+}
+
+.map-legend__point[data-index='2']::before  {
+	width: 10px;
+	height: 10px;
+}
+
+.map-legend__point[data-index='3']::before  {
+	width: 9px;
+	height: 9px;
+}
+
+.map-legend__point[data-index='4']::before  {
+	width: 8px;
+	height: 8px;
+}
+
+.map-legend__point[data-index='5']::before  {
+	width: 7px;
+	height: 7px;
+}
+
+.map-legend__point[data-index='6']::before  {
+	width: 6px;
+	height: 6px;
+}
+
+.map-legend__point[data-index='7']::before  {
+	width: 5px;
+	height: 5px;
+}
+
+.map-legend__point[data-index='8']::before  {
+	width: 4px;
+	height: 4px;
+}
+
+.map-legend__point[data-index='9']::before  {
+	width: 3px;
+	height: 3px;
+}
+
+.map-legend__point[data-index='10']::before  {
+	width: 2px;
+	height: 2px;
+}
+
+//	Кнопка открытия легенды карты
+.map__control {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 3px;
+	background-color: $color-dark-grey;
+  border: 1px solid $color-tundora;
+}
+
+.map__button-open {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	color: $color-light-grey;
+	background-color: transparent;
+	border: none;
+	z-index: 89;
+	transition: all .5s ease-out;
+
+	svg {
+		fill: currentColor;
+	}
+
+	&:active {
+		background-color: $color-light-grey;
+	}
+
+	&:hover svg,
+	&:focus svg {
+		fill: $color-dodger-blue;
+	}
+}
+
+// panel
+.map-rates {
+	display: flex;
+}
+
+.map-rates__button {
+	padding: 10px 15px;
+	color: $color-light-grey;
+	border: none;
+	background-color: $color-dark-grey;
+	border-top: 1px solid $color-tundora;
+	border-right: 1px solid $color-tundora;
+	transition: all .5s ease-out;
+
+	&:not(.active):hover,
+	&:not(.active):focus {
+		color: $color-dodger-blue;
+	}
+
+	&.active {
+		background-color: rgba($color-light-grey, 0.3);
+	}
+}
