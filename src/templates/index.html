@@ -9,23 +9,34 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <div class="container">
         <header>
-          <h1>COVID-19 Global Cases by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins (JHU)</h1>
+          <div id="hamburger-menu"></div>
         </header>
         <main class="grid">
           <section class="gl-cases">
             <h2>Global Cases</h2>
+            <h3 class="total_cases"></h3>
           </section>
           <section class="map">
             <h2>Map</h2>
           </section>
           <section class="gl-deaths">
             <h2>Global Deaths</h2>
+            <h3 class="total_deaths"></h3>
+            <div class="total_deaths_list list">
+              <ul></ul>
+            </div>
           </section>
           <section class="us">
             <h2>US State Level Deaths, Recovered</h2>
+            <div class="us_deaths_list list">
+              <ul></ul>
+            </div>
           </section>
           <section class="loc-cases">
             <h2>Cases by Country/Region/Sovereignty</h2>
+            <div class="total_cases_list list">
+              <ul></ul>
+            </div>
           </section>
           <section class="histogram">
             <h2>Histogram</h2>

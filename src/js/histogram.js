@@ -1,9 +1,3 @@
-// let url = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366';
-
-// setWorldGraph(url);
-
-
-
 const setWorldGraph = (url) => {
     fetch(url).then((response) => response.json()).then((res) => {
         let keysCases = Object.keys(res.cases);

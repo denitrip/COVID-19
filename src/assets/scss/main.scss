@@ -3,7 +3,12 @@
 @import '_mixins';
 @import './utils/normalize';
 @import './layouts/grid';
-@import 'histogram';
+@import './header/header';
+
+// Components
+@import './components/deaths_stats.scss';
+@import './components/global_cases.scss';
+@import './components/histogram.scss';
 
 * {
     box-sizing: border-box;

@@ -1,0 +1,18 @@
+.gl-cases {
+    .total_cases {
+        font-size: 24px;
+        color: $color-red;
+        margin-top: 0;
+    }
+}
+.loc-cases {
+    .list {
+        ul {
+            li {
+                .stats_value {
+                    color: $color-red;
+                }
+            }
+        }
+    }
+}
