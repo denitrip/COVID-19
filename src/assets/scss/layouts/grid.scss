@@ -14,7 +14,9 @@
 }
 
 section {
-  border: 1px solid red; /* temporary */
+  background: $color-dark-grey;
+  border: 1px solid #404040;
+  box-sizing: border-box;
 }
 
 .gl-cases {

@@ -6,6 +6,8 @@ import './header';
 import './deaths_stats';
 import './global_cases';
 
+import'./map';
+
 // EXAMPLE
 // tablesort lib
 // https://github.com/tristen/tablesort

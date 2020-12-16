@@ -3,37 +3,44 @@
 @import '_mixins';
 @import './utils/normalize';
 @import './layouts/grid';
+
 @import './header/header';
 
 // Components
 @import './components/deaths_stats.scss';
 @import './components/global_cases.scss';
 
+@import './components/map';
+@import './components/ol';
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    min-width: 500px;
-    margin: 0;
-    padding: 0;
-    color: $color-light-grey;
-    font-family: $font-raleway;
-    font-size: 14px;
-    line-height: 1.3;
-    font-weight: 400;
-    text-align: center;
-    background-color: $color-dark-grey;
-  }
+  min-width: 500px;
+  margin: 0;
+  padding: 0;
+  color: $color-light-grey;
+  font-family: $font-raleway;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 400;
+  text-align: center;
+  background-color: $color-black;
+}
 
-  h2 {
-    font-size: 14px; /* temporary */
-  }
+h2 {
+  font-size: 14px; /* temporary */
+}
 
-  .container {
-    padding: 0 10px;
-  }
+.container {
+  padding: 0 10px;
+}
 
+button {
+  cursor: pointer;
+}
 
 //     EXAMPLE
 // paths to files '../img/bg.jpg'
