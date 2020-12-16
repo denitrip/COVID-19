@@ -267,7 +267,7 @@ const createPointLayer = () => {
 
   selectPointerMove.on('select', (evt) => {
     const arr = evt.target.getFeatures().getArray();
-    if (arr.length === 0) return;
+    if (!arr.length) return;
 
     const obj = arr[0].getProperties();
 
