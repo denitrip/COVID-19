@@ -3,6 +3,7 @@
 @import '_mixins';
 @import './utils/normalize';
 @import './layouts/grid';
+@import 'histogram';
 
 * {
     box-sizing: border-box;
