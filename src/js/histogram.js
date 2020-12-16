@@ -29,10 +29,80 @@ const setWorldGraph = (url) => {
         }
 
         createGraph(keysCases, valuesCasesDaily, 'Daily Cases', 'bar', true, true);
+
+        document.querySelector('.left-arrow').addEventListener('click', () => {
+            let nameMetrics = leftMetrics(document.querySelector('.graph__metrics').innerHTML);
+            document.querySelector('.graph__metrics').innerHTML = nameMetrics;
+            switch(nameMetrics) {
+                case 'Daily Cases':
+                    createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true, true);
+                    break;
+                case 'Daily Deaths':
+                    createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true, true);
+                    break;
+                case 'Cumulative Cases':
+                    createGraph(keysCases, valuesCases, nameMetrics, 'line', false, true);
+                    break;
+                case 'Cumulative Deaths':
+                    createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', false, true);
+                    break;
+                case 'Log Cases':
+                    createGraph(keysCases, logCases, nameMetrics, 'line', false, false);
+                    break;
+            }
+        });
+
+        document.querySelector('.right-arrow').addEventListener('click', () => {
+            let nameMetrics = rightMetrics(document.querySelector('.graph__metrics').innerHTML);
+            document.querySelector('.graph__metrics').innerHTML = nameMetrics;
+            switch(nameMetrics) {
+                case 'Daily Cases':
+                    createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true, true);
+                    break;
+                case 'Daily Deaths':
+                    createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true, true);
+                    break;
+                case 'Cumulative Cases':
+                    createGraph(keysCases, valuesCases, nameMetrics, 'line', false, true);
+                    break;
+                case 'Cumulative Deaths':
+                    createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', false, true);
+                    break;
+                case 'Log Cases':
+                    createGraph(keysCases, logCases, nameMetrics, 'line', false, false);
+                    break;
+            }
+        });
     });
 }
 
 setWorldGraph('https://disease.sh/v3/covid-19/historical/all?lastdays=366');
+
+const leftMetrics = (name) => {
+    let arrayMentrics = ['Daily Cases', 'Daily Deaths', 'Cumulative Cases', 'Cumulative Deaths', 'Log Cases'];
+    for (let i = 0; i < arrayMentrics.length; i++) {
+        if (arrayMentrics[i] === name) {
+            if (i !== 0) {
+                return arrayMentrics[i - 1];
+            } else {
+                return arrayMentrics[arrayMentrics.length - 1];
+            }
+        }
+    }
+}
+
+const rightMetrics = (name) => {
+    let arrayMentrics = ['Daily Cases', 'Daily Deaths', 'Cumulative Cases', 'Cumulative Deaths', 'Log Cases'];
+    for (let i = 0; i < arrayMentrics.length; i++) {
+        if (arrayMentrics[i] === name) {
+            if (i === arrayMentrics.length - 1) {
+                return arrayMentrics[0];
+            } else {
+                return arrayMentrics[i + 1];
+            }
+        }
+    }
+}
 
 const createGraph = (key, value, title, type, background, zero) => {
     let color;

@@ -12,5 +12,9 @@
     padding: 10px 60px;
     display: flex;
     justify-content: space-between;
-    color: white;
+    color: $color-white;
+}
+
+.left-arrow, .right-arrow {
+    cursor: pointer;
 }
