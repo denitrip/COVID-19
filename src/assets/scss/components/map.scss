@@ -9,9 +9,7 @@
 	overflow: hidden;
 }
 
-.map {
-	position: relative;
-}
+
 
 #map {
   margin: 0;
@@ -21,83 +19,122 @@
 	background-color: $color-swamp;
 }
 
-.map__popup {
-	display: none;
-	position: absolute;
-	height: auto;
-	padding: 15px 45px 15px 30px;
-	box-sizing: border-box;
-	text-align: left;
-	color: $color-light-grey;
-	background-color: $color-dark-grey;
-	border: 1px solid #404040;
-	z-index: 99;
+.map {
+	position: relative;
 
-	&.active {
-		display: block;
+	&__popup {
+		display: none;
+		position: absolute;
+		height: auto;
+		padding: 15px 45px 15px 30px;
+		box-sizing: border-box;
+		text-align: left;
+		color: $color-light-grey;
+		background-color: $color-dark-grey;
+		border: 1px solid #404040;
+		z-index: 99;
+
+		&.active {
+			display: block;
+		}
+	}
+
+	&__title {
+		margin: 0 0 10px;
+		font-size: 12px;
+	}
+
+	&__subtitle {
+		margin: 0 0 10px;
+		font-size: 12px;
+	}
+
+	&__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin-bottom: 5px;
+		}
+	}
+
+	&__button-close {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		width: 30px;
+		height: 30px;
+		background-color: transparent;
+		color: $color-light-grey;
+		border: none;
+		transition: all .5s ease-out;
+
+		svg {
+			fill: currentColor;
+		}
+
+		&:hover svg,
+		&:focus svg {
+			fill: $color-dodger-blue;
+		}
+	}
+
+	&__numbers {
+		font-weight: 900;
+
+		&--death {
+			color: $color-punch;
+		}
+	}
+
+	&__control {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		padding: 3px;
+		background-color: $color-dark-grey;
+		border: 1px solid $color-tundora;
+	}
+
+	&__button-open {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 30px;
+		height: 30px;
+		color: $color-light-grey;
+		background-color: transparent;
+		border: none;
+		z-index: 89;
+		transition: all .5s ease-out;
+
+		svg {
+			fill: currentColor;
+		}
+
+		&:active {
+			background-color: $color-light-grey;
+		}
+
+		&:hover svg,
+		&:focus svg {
+			fill: $color-dodger-blue;
+		}
 	}
 }
 
-.map__title {
-	margin: 0 0 10px;
-	font-size: 12px;
-}
-
-.map__subtitle {
-	margin: 0 0 10px;
-	font-size: 12px;
-}
-
-.map__list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-
-	li {
-		margin-bottom: 5px;
-	}
-}
-
-.map__button-close {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	width: 30px;
-	height: 30px;
-	background-color: transparent;
-	color: $color-light-grey;
-	border: none;
-	transition: all .5s ease-out;
-
-	svg {
-		fill: currentColor;
-	}
-
-	&:hover svg,
-	&:focus svg {
-		fill: $color-dodger-blue;
-	}
-}
-
-.map__numbers {
-	font-weight: 900;
-
-	&--death {
-		color: $color-punch;
-	}
-}
-
-//	stats
+//  stats
 .map-stats {
 	width: 200px;
 	top: 10px;
 	left: 10px;
 }
 
-// legend
+//  legend
 .map-legend {
 	top: 52px;
 	right: 10px;
@@ -124,93 +161,15 @@
 	}
 }
 
-.map-legend__point[data-index='1']::before  {
-	width: 11px;
-	height: 11px;
-}
-
-.map-legend__point[data-index='2']::before  {
-	width: 10px;
-	height: 10px;
-}
-
-.map-legend__point[data-index='3']::before  {
-	width: 9px;
-	height: 9px;
-}
-
-.map-legend__point[data-index='4']::before  {
-	width: 8px;
-	height: 8px;
-}
-
-.map-legend__point[data-index='5']::before  {
-	width: 7px;
-	height: 7px;
-}
-
-.map-legend__point[data-index='6']::before  {
-	width: 6px;
-	height: 6px;
-}
-
-.map-legend__point[data-index='7']::before  {
-	width: 5px;
-	height: 5px;
-}
-
-.map-legend__point[data-index='8']::before  {
-	width: 4px;
-	height: 4px;
-}
-
-.map-legend__point[data-index='9']::before  {
-	width: 3px;
-	height: 3px;
-}
-
-.map-legend__point[data-index='10']::before  {
-	width: 2px;
-	height: 2px;
-}
-
-//	Кнопка открытия легенды карты
-.map__control {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	padding: 3px;
-	background-color: $color-dark-grey;
-  border: 1px solid $color-tundora;
-}
-
-.map__button-open {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 30px;
-	height: 30px;
-	color: $color-light-grey;
-	background-color: transparent;
-	border: none;
-	z-index: 89;
-	transition: all .5s ease-out;
-
-	svg {
-		fill: currentColor;
-	}
-
-	&:active {
-		background-color: $color-light-grey;
-	}
-
-	&:hover svg,
-	&:focus svg {
-		fill: $color-dodger-blue;
+@for $i from 1 through 10 {
+	.map-legend__point[data-index='#{$i}']::before {
+			$size: 12-$i+px;
+			width: $size;
+			height: $size;
 	}
 }
 
-// panel
+//  map rates
 .map-rates {
 	display: flex;
 }
