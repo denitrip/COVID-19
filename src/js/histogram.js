@@ -4,11 +4,13 @@ const setWorldGraph = (url) => {
         let valuesCases = Object.values(res.cases);
         let keysDeaths = Object.keys(res.deaths);
         let valuesDeaths = Object.values(res.deaths);
+        let keysRecovered = Object.keys(res.recovered);
+        let valuesRecovered = Object.values(res.recovered);
 
         let valuesCasesDaily = [];
         for (let i = 0; i < valuesCases.length; i++) {
             if (i != 0 || i != valuesCases.length - 1) {
-                valuesCasesDaily.push(valuesCases[i] - valuesCases[i - 1]);
+                valuesCasesDaily.push(Math.abs(valuesCases[i] - valuesCases[i - 1]));
             } else {
                 valuesCasesDaily.push(valuesCases[i]);
             }
@@ -17,16 +19,21 @@ const setWorldGraph = (url) => {
         let valuesDeathsDaily = [];
         for (let i = 0; i < valuesDeaths.length; i++) {
             if (i != 0 || i != valuesDeaths.length - 1) {
-                valuesDeathsDaily.push(valuesDeaths[i] - valuesDeaths[i - 1]);
+                valuesDeathsDaily.push(Math.abs(valuesDeaths[i] - valuesDeaths[i - 1]));
             } else {
                 valuesDeathsDaily.push(valuesDeaths[i]);
             }
         }
 
-        let logCases = [];
-        for (let i = 0; i < valuesCases.length; i++) {
-            logCases.push(Math.log(valuesCases[i]));
+        let valuesRecoveredDaily = [];
+        for (let i = 0; i < valuesRecovered.length; i++) {
+            if (i != 0 || i != valuesRecovered.length - 1) {
+                valuesRecoveredDaily.push(Math.abs(valuesRecovered[i] - valuesRecovered[i - 1]));
+            } else {
+                valuesRecoveredDaily.push(valuesRecovered[i]);
+            }
         }
+
 
         createGraph(keysCases, valuesCasesDaily, 'Daily Cases', 'bar', true, true);
 
@@ -35,19 +42,22 @@ const setWorldGraph = (url) => {
             document.querySelector('.graph__metrics').innerHTML = nameMetrics;
             switch(nameMetrics) {
                 case 'Daily Cases':
-                    createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true, true);
+                    createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true);
                     break;
                 case 'Daily Deaths':
-                    createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true, true);
+                    createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true);
+                    break;
+                case 'Daily Recovered':
+                    createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, 'bar', true);
                     break;
                 case 'Cumulative Cases':
-                    createGraph(keysCases, valuesCases, nameMetrics, 'line', false, true);
+                    createGraph(keysCases, valuesCases, nameMetrics, 'line', false);
                     break;
                 case 'Cumulative Deaths':
-                    createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', false, true);
+                    createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', false);
                     break;
-                case 'Log Cases':
-                    createGraph(keysCases, logCases, nameMetrics, 'line', false, false);
+                case 'Cumulative Recovered':
+                    createGraph(keysRecovered, valuesRecovered, nameMetrics, 'line', false);
                     break;
             }
         });
@@ -57,19 +67,22 @@ const setWorldGraph = (url) => {
             document.querySelector('.graph__metrics').innerHTML = nameMetrics;
             switch(nameMetrics) {
                 case 'Daily Cases':
-                    createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true, true);
+                    createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true);
                     break;
                 case 'Daily Deaths':
-                    createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true, true);
+                    createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true);
+                    break;
+                case 'Daily Recovered':
+                    createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, 'bar', true);
                     break;
                 case 'Cumulative Cases':
-                    createGraph(keysCases, valuesCases, nameMetrics, 'line', false, true);
+                    createGraph(keysCases, valuesCases, nameMetrics, 'line', false);
                     break;
                 case 'Cumulative Deaths':
-                    createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', false, true);
+                    createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', false);
                     break;
-                case 'Log Cases':
-                    createGraph(keysCases, logCases, nameMetrics, 'line', false, false);
+                case 'Cumulative Recovered':
+                    createGraph(keysRecovered, valuesRecovered, nameMetrics, 'line', false);
                     break;
             }
         });
@@ -79,7 +92,7 @@ const setWorldGraph = (url) => {
 setWorldGraph('https://disease.sh/v3/covid-19/historical/all?lastdays=366');
 
 const leftMetrics = (name) => {
-    let arrayMentrics = ['Daily Cases', 'Daily Deaths', 'Cumulative Cases', 'Cumulative Deaths', 'Log Cases'];
+    let arrayMentrics = ['Daily Cases', 'Cumulative Cases', 'Daily Deaths', 'Cumulative Deaths', 'Daily Recovered', 'Cumulative Recovered'];
     for (let i = 0; i < arrayMentrics.length; i++) {
         if (arrayMentrics[i] === name) {
             if (i !== 0) {
@@ -92,7 +105,7 @@ const leftMetrics = (name) => {
 }
 
 const rightMetrics = (name) => {
-    let arrayMentrics = ['Daily Cases', 'Daily Deaths', 'Cumulative Cases', 'Cumulative Deaths', 'Log Cases'];
+    let arrayMentrics = ['Daily Cases', 'Cumulative Cases', 'Daily Deaths', 'Cumulative Deaths', 'Daily Recovered', 'Cumulative Recovered'];
     for (let i = 0; i < arrayMentrics.length; i++) {
         if (arrayMentrics[i] === name) {
             if (i === arrayMentrics.length - 1) {
@@ -104,25 +117,12 @@ const rightMetrics = (name) => {
     }
 }
 
-const createGraph = (key, value, title, type, background, zero) => {
+const createGraph = (key, value, title, type, background) => {
     let color;
     if (background) {
         color = 'rgba(255, 159, 64, 0.2)';
     } else {
         color = 'rgba(255, 159, 64, 0)';
-    }
-
-    let options;
-    if (zero) {
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
     }
 
     document.querySelector('.graph').innerHTML = '<canvas id="myChart"></canvas>';
@@ -139,6 +139,14 @@ const createGraph = (key, value, title, type, background, zero) => {
                 borderWidth: 1
             }]
         },
-        options
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
     });
 }
