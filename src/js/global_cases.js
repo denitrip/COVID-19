@@ -1,10 +1,10 @@
-const globalCasesURL = 'https://disease.sh/v3/covid-19/countries?sort=cases';
-const totalCasesUl = '.total_cases_list ul';
-const totalCasesHeading = '.total_cases';
+const globalStatsURL = 'https://disease.sh/v3/covid-19/countries';
+export const totalStatsUlList = '.total_cases_list ul';
+const totalStatsHeading = '.total_cases';
 
-setGlobalCases(globalCasesURL);
+setGlobalCasesHeading(globalStatsURL);
 
-function setGlobalCases(url) {
+function setGlobalCasesHeading(url) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
@@ -12,16 +12,8 @@ function setGlobalCases(url) {
 
             result.forEach((item) => {
                 sum += item.cases;
-                const globalCases = document.querySelector(totalCasesUl);
-                let itemLi = document.createElement('li');
-                itemLi.innerHTML = `<span>
-                                        <span class='stats_value'>${item.cases.toLocaleString()}</span>
-                                    </span>
-                                    <span>${item.country}</span>`;
-                globalCases.append(itemLi);
-
-                const totalCases = document.querySelector(totalCasesHeading);
-                totalCases.innerHTML = `${sum.toLocaleString()}`;
+                const totalStats = document.querySelector(totalStatsHeading);
+                totalStats.innerHTML = `${sum.toLocaleString()}`;
             });
         });
 }
