@@ -24,18 +24,12 @@ body {
     font-weight: 400;
     text-align: center;
     background-color: $color-dark-grey;
-  }
+}
 
-  h2 {
+h2 {
     font-size: 14px; /* temporary */
-  }
+}
 
-  .container {
+.container {
     padding: 0 10px;
-  }
-
-
-//     EXAMPLE
-// paths to files '../img/bg.jpg'
-
-@import 'media';
+}
