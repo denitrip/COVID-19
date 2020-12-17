@@ -1,5 +1,4 @@
 const globalStatsURL = 'https://disease.sh/v3/covid-19/countries';
-export const totalStatsUlList = '.total_cases_list ul';
 const totalStatsHeading = '.total_cases';
 
 setGlobalCasesHeading(globalStatsURL);

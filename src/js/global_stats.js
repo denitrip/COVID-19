@@ -1,18 +1,18 @@
 import './libs/choices.min';
-import { totalStatsUlList } from './global_cases';
 
 const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
 const USstatsURL = 'https://disease.sh/v3/covid-19/states?sort=deaths';
 const totalStatsUl = '.total_deaths_list ul';
+const totalStatsUlList = '.total_cases_list ul';
 const totalStatsHeading = '.total_deaths';
 const USstatsUl = '.us_deaths_list ul';
 
-let country;
 let countriesArr = [];
 countriesArr[0] = { value: 'Global' };
 
 setUSstats(USstatsURL);
 
+// selected country click
 const countriesSelect = document.querySelector('#countries');
 countriesSelect.addEventListener('change', () => {
     checkButtonsState();
@@ -31,7 +31,7 @@ tabButtons.forEach((item) => {
 // default opened tab "Deaths"
 tabButtons[0].click();
 
-function checkButtonsState() {
+function checkButtonsState(country) {
     let tablinks = document.querySelectorAll('.categories .tablinks');
     let currField;
     tablinks.forEach((item) => {
@@ -63,8 +63,9 @@ function checkButtonsState() {
             }
         }
     });
-
-    if (countriesSelect.childNodes[0]) {
+    if (country) {
+        country = country;
+    } else if (countriesSelect.childNodes[0]) {
         country = countriesSelect.childNodes[0].value;
     } else {
         country = 'Global';
@@ -187,6 +188,7 @@ function checkField(field, item, isAll, isAbsolute) {
             }
         }
     }
+
     if (!value) {
         value = 0;
     }
@@ -218,8 +220,8 @@ function setGlobalStats(url, field, isAbsolute, isAll, country) {
                                         <span class='stats_value'>${value.toLocaleString()}</span> ${field}
                                     </span>
                                     <span class='stats_value'>${item.country}</span>`;
-                itemLiList.innerHTML = `<span>
-                                    <span class='stats_value'>${value.toLocaleString()}</span> ${item.country} <img src=${item.countryInfo.flag} alt='flag'>
+                itemLiList.innerHTML = `<span class="list_item">
+                                    <span class='stats_value'>${value.toLocaleString()}</span> <span class="list_country">${item.country}</span> <img src=${item.countryInfo.flag} alt='flag'>
                                 </span>`;
                 // global stats
                 if (country == 'Global') {
@@ -231,8 +233,8 @@ function setGlobalStats(url, field, isAbsolute, isAll, country) {
                     globalStatsList.append(itemLiList);
                 }
 
-                countriesArr[index] = {};
-                countriesArr[index]['value'] = item.country;
+                countriesArr[index + 1] = {};
+                countriesArr[index + 1]['value'] = item.country;
 
                 const totalStats = document.querySelector(`#${field} ${totalStatsHeading}`);
                 totalStats.innerHTML = `${sum.toLocaleString()}`;
@@ -244,6 +246,14 @@ function setGlobalStats(url, field, isAbsolute, isAll, country) {
                 shouldSort: false,
             });
             country = countriesSelect.childNodes[0].value;
+
+            const totalStatsList = document.querySelector(`#${field} ${totalStatsUlList}`);
+            totalStatsList.onclick = (e) => {
+                let listItem = e.target.closest('.list_item');
+                if (!listItem) return;
+                let countryName = listItem.querySelector('.list_country').innerHTML;
+                checkButtonsState(countryName);
+            };
         });
 }
 
