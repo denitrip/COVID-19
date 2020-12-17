@@ -1,0 +1,30 @@
+footer {
+    display: flex;
+    justify-content: space-between;
+    width: 30vw;
+    align-items: center;
+    margin: 4% auto;
+    font-size: 16px;
+}
+.footer-rows {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+.icon-class {
+    width: 90px;
+    height: 70px;
+    margin-left: 20px;
+    background-color: $color-dark-grey;
+
+    &:hover {
+        background-color: $color-white;
+    }
+}
+a {
+    color: $color-light-grey;
+
+    &:hover {
+        color: $color-white;
+    }
+}
