@@ -3,12 +3,7 @@ import '../assets/scss/main.scss';
 import './header';
 
 // Components
-import './deaths_stats';
+import './global_stats';
 import './global_cases';
 
 import'./map';
-
-// EXAMPLE
-// tablesort lib
-// https://github.com/tristen/tablesort
-// import './libs/tablesort.min';
