@@ -76,6 +76,10 @@ module.exports = {
                     from: path.resolve(environment.paths.source, 'assets/img', ''),
                     to: path.resolve(environment.paths.output, 'assets/img', ''),
                 },
+                {
+                    from: path.resolve(environment.paths.source, 'data', ''),
+                    to: path.resolve(environment.paths.output, 'data', ''),
+                },
             ],
         }),
     ].concat(htmlPluginEntries),
