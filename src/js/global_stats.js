@@ -1,7 +1,10 @@
-import './libs/choices.min';
+import Choices from 'choices.js';
+import 'choices.js/public/assets/styles/choices.min.css';
 
-const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
-const USstatsURL = 'https://disease.sh/v3/covid-19/states?sort=deaths';
+import { updateData } from './service';
+
+export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
+export const USstatsURL = 'https://disease.sh/v3/covid-19/states?yesterday=true';
 const totalStatsUl = '.total_deaths_list ul';
 const totalStatsUlList = '.total_cases_list ul';
 const totalStatsHeading = '.total_deaths';
@@ -10,12 +13,10 @@ const USstatsUl = '.us_deaths_list ul';
 let countriesArr = [];
 countriesArr[0] = { value: 'Global' };
 
-setUSstats(USstatsURL);
-
 // selected country click
-const countriesSelect = document.querySelector('#countries');
+export const countriesSelect = document.querySelector('#countries');
 countriesSelect.addEventListener('change', () => {
-    checkButtonsState();
+    updateData();
 });
 
 let tabButtons = document.querySelectorAll('.categories .tablinks');
@@ -24,82 +25,39 @@ tabButtons.forEach((item) => {
         // remove "_btn" from id's
         let correctId = item.id.substring(0, item.id.indexOf('_btn'));
         showTabContent(event, correctId);
-        checkButtonsState();
+        updateData();
     });
 });
 
 // default opened tab "Deaths"
 tabButtons[0].click();
 
-function checkButtonsState(country) {
-    let tablinks = document.querySelectorAll('.categories .tablinks');
-    let currField;
-    tablinks.forEach((item) => {
-        if (item.classList.contains('active')) {
-            currField = item.id.substring(0, item.id.indexOf('_btn'));
-        }
-    });
-
-    let isAbsoluteBtns = document.querySelectorAll('.isAbsolute .tablinks');
-    let isAbsolute;
-    isAbsoluteBtns.forEach((item) => {
-        if (item.classList.contains('active')) {
-            if (item.id === 'absolute_btn') {
-                isAbsolute = true;
-            } else {
-                isAbsolute = false;
-            }
-        }
-    });
-
-    let isAllBtns = document.querySelectorAll('.isAll .tablinks');
-    let isAll;
-    isAllBtns.forEach((item) => {
-        if (item.classList.contains('active')) {
-            if (item.id === 'all_btn') {
-                isAll = true;
-            } else {
-                isAll = false;
-            }
-        }
-    });
-    if (country) {
-        country = country;
-    } else if (countriesSelect.childNodes[0]) {
-        country = countriesSelect.childNodes[0].value;
-    } else {
-        country = 'Global';
-    }
-
-    setGlobalStats(globalStatsURL, currField, isAbsolute, isAll, country);
-}
-
 let thousandBtn = document.querySelector('#per_100_thousand_btn');
 thousandBtn.addEventListener('click', () => {
     thousandBtn.classList.add('active');
     absoluteBtn.classList.remove('active');
-    checkButtonsState();
+    updateData();
 });
 
 let absoluteBtn = document.querySelector('#absolute_btn');
 absoluteBtn.addEventListener('click', () => {
     absoluteBtn.classList.add('active');
     thousandBtn.classList.remove('active');
-    checkButtonsState();
+    updateData();
 });
 
 let allBtn = document.querySelector('#all_btn');
 allBtn.addEventListener('click', () => {
     allBtn.classList.add('active');
     lastDayBtn.classList.remove('active');
-    checkButtonsState();
+    updateData();
 });
 
 let lastDayBtn = document.querySelector('#last_day_btn');
 lastDayBtn.addEventListener('click', () => {
     lastDayBtn.classList.add('active');
     allBtn.classList.remove('active');
-    checkButtonsState();
+    updateData();
 });
 
 function showTabContent(e, field) {
@@ -133,58 +91,36 @@ function showTabContent(e, field) {
 
 function checkField(field, item, isAll, isAbsolute) {
     let value;
+    let allDays;
+    let lastDay;
+
     if (field == 'deaths') {
-        if (isAll) {
-            if (isAbsolute) {
-                value = item.deaths;
-            } else {
-                if (item.population) {
-                    value = (item.deaths / item.population) * 100000;
-                }
-            }
-        } else {
-            if (isAbsolute) {
-                value = item.todayDeaths;
-            } else {
-                if (item.population) {
-                    value = (item.todayDeaths / item.population) * 100000;
-                }
-            }
-        }
+        allDays = item['deaths'];
+        lastDay = item['todayDeaths'];
     } else if (field == 'cases') {
-        if (isAll) {
-            if (isAbsolute) {
-                value = item.cases;
-            } else {
-                if (item.population) {
-                    value = (item.cases / item.population) * 100000;
-                }
-            }
+        allDays = item['cases'];
+        lastDay = item['todayCases'];
+    } else if (field == 'recovered') {
+        allDays = item['recovered'];
+        lastDay = item['todayRecovered'];
+    }
+
+    // all days
+    if (isAll) {
+        if (isAbsolute) {
+            value = allDays;
         } else {
-            if (isAbsolute) {
-                value = item.todayCases;
-            } else {
-                if (item.population) {
-                    value = (item.todayCases / item.population) * 100000;
-                }
+            if (item.population) {
+                value = (allDays / item.population) * 100000;
             }
         }
-    } else if (field == 'recovered') {
-        if (isAll) {
-            if (isAbsolute) {
-                value = item.recovered;
-            } else {
-                if (item.population) {
-                    value = (item.recovered / item.population) * 100000;
-                }
-            }
+        // only last day
+    } else {
+        if (isAbsolute) {
+            value = lastDay;
         } else {
-            if (isAbsolute) {
-                value = item.todayRecovered;
-            } else {
-                if (item.population) {
-                    value = (item.todayRecovered / item.population) * 100000;
-                }
+            if (item.population) {
+                value = (lastDay / item.population) * 100000;
             }
         }
     }
@@ -196,7 +132,7 @@ function checkField(field, item, isAll, isAbsolute) {
     return value;
 }
 
-function setGlobalStats(url, field, isAbsolute, isAll, country) {
+export function setGlobalStats(url, field, isAbsolute, isAll, country) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
@@ -252,22 +188,24 @@ function setGlobalStats(url, field, isAbsolute, isAll, country) {
                 let listItem = e.target.closest('.list_item');
                 if (!listItem) return;
                 let countryName = listItem.querySelector('.list_country').innerHTML;
-                checkButtonsState(countryName);
+                updateData(countryName);
             };
         });
 }
 
-function setUSstats(url) {
+export function setUSstats(url, field, isAbsolute, isAll) {
     fetch(url)
         .then((response) => response.json())
         .then((result) => {
+            const USstats = document.querySelector(USstatsUl);
+            USstats.innerHTML = '';
+
             result.forEach((item) => {
-                const USstats = document.querySelector(USstatsUl);
+                let value = checkField(field, item, isAll, isAbsolute);
                 let itemLi = document.createElement('li');
                 itemLi.innerHTML = `<span>
-                                            <span class='stats_value'>${item.deaths.toLocaleString()} <span>deaths</span></span>
+                                            <span class='stats_value'>${value.toLocaleString()} <span>${field}</span></span>
                                         </span>
-                                        <span class='stats_value'>${item.recovered.toLocaleString()} <span>recovered</span></span>
                                         <span class='stats_value'>${item.state} US</span>`;
                 USstats.append(itemLi);
             });
