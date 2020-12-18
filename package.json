@@ -9,7 +9,8 @@
   ],
   "dependencies": {
     "babel-eslint": "^10.1.0",
-    "ol": "^6.0.0-beta.15"
+    "ol": "^6.0.0-beta.15",
+    "choices.js": "^9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
