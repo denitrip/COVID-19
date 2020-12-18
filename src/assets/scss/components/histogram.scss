@@ -1,20 +1,75 @@
-// .histogram {
-//     margin: 0 auto;
-// }
-
 .graph {
-    margin-bottom: 30px;
-    width: 480px; 
-    height: 200px;
-}
+    width: 100%;
 
-.graph__selector {
-    padding: 10px 60px;
-    display: flex;
-    justify-content: space-between;
-    color: $color-white;
+    &__selector {
+        padding: 0px 60px 10px;
+        display: flex;
+        justify-content: space-between;
+        color: $color-white;
+    }
+
+    &__full-screen {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        margin: 420px 20px 0px 0px;
+        width: 30px;
+        height: 30px;
+    
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__popup {
+        width: 80%;
+        height: 50%;
+    }
+
+    &__button {
+        border: none;
+        color: $color-white;
+        padding: 10px 20px;
+        background-color: $color-transparent-white;
+    
+        &:active {
+            background-color: $color-dark-grey;
+        }
+        
+        &:focus {
+            background-color: $color-dark-grey;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        right: 0px;
+        margin-right: 20px;
+        font-size: 60px;
+    
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 
 .left-arrow, .right-arrow {
     cursor: pointer;
+}
+
+.histogram__popup {
+    position: absolute;
+    top: 0px;
+    margin-top: 100px;
+    display: none;
+    width: 99%;
+    height: 86%;
+    background-color: $color-tundora;
+
+    &_content {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
+    }
 }
