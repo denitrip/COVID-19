@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <div class="container">
     <header>
       <div id="hamburger-menu"></div>
@@ -81,6 +82,14 @@
       </section>
       <section class="histogram">
         <h2>Histogram</h2>
+        <div class="graph">
+        </div>
+        <div class="graph__selector">
+          <div class="left-arrow">&#9668</div>
+          <div class="graph__metrics">Daily Cases</div>
+          <div class="right-arrow">&#9658</div>
+        </div>
+        <img class="graph__full-screen" src="../assets/img/open.svg" alt="open">
       </section>
     </main>
     <footer>
@@ -93,6 +102,11 @@
       <p>2020</p>
       <a href="https://rs.school/js/" target="_blank"><img src="/assets/img/rs_school_js.svg" alt="rs school" class="icon-class"></a>
     </footer>
+    <div class="histogram__popup">
+      <div class="graph__close">&times</div>
+      <div class="histogram__popup_content">
+      </div>
+    </div>
   </div>
 </body>
 

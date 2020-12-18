@@ -5,5 +5,6 @@ import './header';
 // Components
 import './global_stats';
 import './global_cases';
+import './histogram';
 
 import'./map';
