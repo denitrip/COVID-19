@@ -1,5 +1,31 @@
 const displayNone = 'none',
-      displayBlock = 'block';
+      displayBlock = 'block',
+      bar = 'bar',
+      line = 'line',
+      graphFullScreen = '.graph__full-screen',
+      popupContent = '.histogram__popup_content',
+      popup = '.histogram__popup',
+      graphPopup = '.graph__popup',
+      graphButtons = '.graph__buttons',
+      graphButton = '.graph__button',
+      graphMetrics = '.graph__metrics',
+      graphClose = '.graph__close',
+      graph = '.graph',
+      arrowLeft = '.left-arrow',
+      arrowRight = '.right-arrow',
+      dailyCases = 'Daily Cases',
+      dailyDeaths = 'Daily Deaths',
+      dailyRecovered = 'Daily Recovered',
+      cumulativeCases = 'Cumulative Cases',
+      cumulativeDeaths = 'Cumulative Deaths',
+      cumulativeRecovered = 'Cumulative Recovered',
+      arrayMetrics = [dailyCases, cumulativeCases, dailyDeaths, cumulativeDeaths, dailyRecovered, cumulativeRecovered],
+      chart = 'myChart',
+      chartFullScreen = 'myChartFullScreen',
+      colorBackgroundGraph = 'rgba(255, 159, 64, 0.2)',
+      colorBackgroundOpacityZero = 'rgba(255, 159, 64, 0)',
+      colorBorderGraph = 'rgba(255, 159, 64, 1)';
+      urlHistoricalGlobal = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366';
 
 const setWorldGraph = (url) => {
     fetch(url).then((response) => response.json()).then((res) => {
@@ -13,132 +39,134 @@ const setWorldGraph = (url) => {
               valuesDeathsDaily = countDaily(valuesDeaths),
               valuesRecoveredDaily = countDaily(valuesRecovered);
 
-        createGraph(keysCases, valuesCasesDaily, 'Daily Cases', 'bar', );
+        createGraph(keysCases, valuesCasesDaily, dailyCases, bar, );
 
-        document.querySelector('.graph__full-screen').addEventListener('click', () => {
-            document.querySelector('.histogram__popup_content').innerHTML = '';
-            document.querySelector('.histogram__popup').style.display = displayBlock;
+        document.querySelector(graphFullScreen).addEventListener('click', () => {
+            document.querySelector(popupContent).innerHTML = '';
+            document.querySelector(popup).style.display = displayBlock;
 
-            document.querySelector('.histogram__popup_content').innerHTML += `
-                <div class="graph__popup"></div>
-                <div class="graph__buttons">
-                    <button class="graph__button">Daily Cases</button>
-                    <button class="graph__button">Cumulative Cases</button>
-                    <button class="graph__button">Daily Deaths</button>
-                    <button class="graph__button">Cumulative Deaths</button>
-                    <button class="graph__button">Daily Recovered</button>
-                    <button class="graph__button">Cumulative Recovered</button>
+            document.querySelector(popupContent).innerHTML += `
+                <div class=${graphPopup.slice(1)}></div>
+                <div class=${graphButtons}>
+                    <button class=${graphButton.slice(1)}>${dailyCases}</button>
+                    <button class=${graphButton.slice(1)}>${cumulativeCases}</button>
+                    <button class=${graphButton.slice(1)}>${dailyDeaths}</button>
+                    <button class=${graphButton.slice(1)}>${cumulativeDeaths}</button>
+                    <button class=${graphButton.slice(1)}>${dailyRecovered}</button>
+                    <button class=${graphButton.slice(1)}>${cumulativeRecovered}</button>
                 </div>
             `;
 
-            choiceIndicator(document.querySelector('.graph__metrics').innerHTML, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
+            choiceIndicator(document.querySelector(graphMetrics).innerHTML, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
             
-            for (let i = 0; i < document.querySelectorAll('.graph__button').length; i++) {
-                document.querySelectorAll('.graph__button')[i].addEventListener('click', () => {
-                    choiceIndicator(document.querySelectorAll('.graph__button')[i].innerHTML, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
-                });
-            }
+            document.querySelectorAll(graphButton).forEach(elem => {
+                elem.addEventListener('click', () => {
+                    choiceIndicator(elem.innerHTML, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
+                })
+            });
         });
 
-        document.querySelector('.graph__close').addEventListener('click', () => {
-            document.querySelector('.histogram__popup').style.display = displayNone;
+        document.querySelector(graphClose).addEventListener('click', () => {
+            document.querySelector(popup).style.display = displayNone;
         });
 
-        document.querySelector('.left-arrow').addEventListener('click', () => {
-            let nameMetrics = leftMetrics(document.querySelector('.graph__metrics').innerHTML);
+        document.querySelector(arrowLeft).addEventListener('click', () => {
+            let nameMetrics = leftMetrics(document.querySelector(graphMetrics).innerHTML);
             choiceIndicator(nameMetrics, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
         });
 
-        document.querySelector('.right-arrow').addEventListener('click', () => {
-            let nameMetrics = rightMetrics(document.querySelector('.graph__metrics').innerHTML);
+        document.querySelector(arrowRight).addEventListener('click', () => {
+            let nameMetrics = rightMetrics(document.querySelector(graphMetrics).innerHTML);
             choiceIndicator(nameMetrics, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
         });
     });
 }
 
 const choiceIndicator = (nameMetrics, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, full) => {
-    document.querySelector('.graph__metrics').innerHTML = nameMetrics;
+    document.querySelector(graphMetrics).innerHTML = nameMetrics;
     switch(nameMetrics) {
-        case 'Daily Cases':
-            createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar');
-            if (full) createGraph(keysCases, valuesCasesDaily, nameMetrics, 'bar', true);
+        case dailyCases:
+            createGraph(keysCases, valuesCasesDaily, nameMetrics, bar);
+            if (full) createGraph(keysCases, valuesCasesDaily, nameMetrics, bar, true);
             break;
-        case 'Daily Deaths':
-            createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar');
-            if (full) createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, 'bar', true);
+        case dailyDeaths:
+            createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, bar);
+            if (full) createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, bar, true);
             break;
-        case 'Daily Recovered':
-            createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, 'bar');
-            if (full) createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, 'bar', true);
+        case dailyRecovered:
+            createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, bar);
+            if (full) createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, bar, true);
             break;
-        case 'Cumulative Cases':
-            createGraph(keysCases, valuesCases, nameMetrics, 'line');
-            if (full) createGraph(keysCases, valuesCases, nameMetrics, 'line', true);
+        case cumulativeCases:
+            createGraph(keysCases, valuesCases, nameMetrics, line);
+            if (full) createGraph(keysCases, valuesCases, nameMetrics, line, true);
             break;
-        case 'Cumulative Deaths':
-            createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line');
-            if (full) createGraph(keysDeaths, valuesDeaths, nameMetrics, 'line', true);
+        case cumulativeDeaths:
+            createGraph(keysDeaths, valuesDeaths, nameMetrics, line);
+            if (full) createGraph(keysDeaths, valuesDeaths, nameMetrics, line, true);
             break;
-        case 'Cumulative Recovered':
-            createGraph(keysRecovered, valuesRecovered, nameMetrics, 'line');
-            if (full) createGraph(keysRecovered, valuesRecovered, nameMetrics, 'line', true);
+        case cumulativeRecovered:
+            createGraph(keysRecovered, valuesRecovered, nameMetrics, line);
+            if (full) createGraph(keysRecovered, valuesRecovered, nameMetrics, line, true);
             break;
     }
 }
 
 const countDaily = (value) => {
     let valuesDaily = [];
-    for (let i = 0; i < value.length; i++) {
-        if (i != 0 || i != value.length - 1) {
-            valuesDaily.push(Math.abs(value[i] - value[i - 1]));
+    value.forEach((elem, index, arr) => {
+        if (index != 0 || index != arr.length - 1) {
+            valuesDaily.push(Math.abs(elem - arr[index - 1]));
         } else {
-            valuesDaily.push(value[i]);
+            valuesDaily.push(elem);
         }
-    }
+    });
     return valuesDaily;
 }
 
 const leftMetrics = (name) => {
-    let arrayMentrics = ['Daily Cases', 'Cumulative Cases', 'Daily Deaths', 'Cumulative Deaths', 'Daily Recovered', 'Cumulative Recovered'];
-    for (let i = 0; i < arrayMentrics.length; i++) {
-        if (arrayMentrics[i] === name) {
-            if (i !== 0) {
-                return arrayMentrics[i - 1];
+    let metric;
+    arrayMetrics.forEach((elem, index, arr) => {
+        if (elem === name) {
+            if (index !== 0) {
+                metric = arr[index - 1];
             } else {
-                return arrayMentrics[arrayMentrics.length - 1];
+                metric = arr[arr.length - 1];
             }
         }
-    }
+    });
+    return metric;
 }
 
 const rightMetrics = (name) => {
-    let arrayMentrics = ['Daily Cases', 'Cumulative Cases', 'Daily Deaths', 'Cumulative Deaths', 'Daily Recovered', 'Cumulative Recovered'];
-    for (let i = 0; i < arrayMentrics.length; i++) {
-        if (arrayMentrics[i] === name) {
-            if (i === arrayMentrics.length - 1) {
-                return arrayMentrics[0];
+    let metric;
+    arrayMetrics.forEach((elem, index, arr) => {
+        if (elem === name) {
+            if (index === arr.length - 1) {
+                metric = arr[0];
             } else {
-                return arrayMentrics[i + 1];
+                metric = arr[index + 1];
             }
         }
-    }
+    });
+    return metric;
 }
 
 const createGraph = (key, value, title, type, full) => {
     let color;
-    if (type === 'bar') {
-        color = 'rgba(255, 159, 64, 0.2)';
+    if (type === bar) {
+        color = colorBackgroundGraph;
     } else {
-        color = 'rgba(255, 159, 64, 0)';
+        color = colorBackgroundOpacityZero;
     }
 
     let nameIdChart;
     if (full) {
-        document.querySelector('.graph__popup').innerHTML = '<canvas id="myChartFullScreen"></canvas>';
-        nameIdChart = 'myChartFullScreen';
+        document.querySelector(graphPopup).innerHTML = `<canvas id=${chartFullScreen}></canvas>`;
+        nameIdChart = chartFullScreen;
     } else {
-        document.querySelector('.graph').innerHTML = '<canvas id="myChart"></canvas>';
-        nameIdChart = 'myChart';
+        document.querySelector(graph).innerHTML = `<canvas id=${chart}></canvas>`;
+        nameIdChart = chart;
     }
  
     var ctx = document.querySelectorAll(`#${nameIdChart}`);
@@ -150,7 +178,7 @@ const createGraph = (key, value, title, type, full) => {
                 label: title,
                 data: value,
                 backgroundColor: color,
-                borderColor: 'rgba(255, 159, 64, 1)',
+                borderColor: colorBorderGraph,
                 borderWidth: 1
             }]
         },
@@ -166,4 +194,4 @@ const createGraph = (key, value, title, type, full) => {
     });
 }
 
-setWorldGraph('https://disease.sh/v3/covid-19/historical/all?lastdays=366');
+setWorldGraph(urlHistoricalGlobal);
