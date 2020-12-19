@@ -1,5 +1,5 @@
-import Choices from 'choices.js';
-import 'choices.js/public/assets/styles/choices.min.css';
+import Keyboard from 'simple-keyboard';
+import 'simple-keyboard/build/css/index.css';
 
 import { updateData } from './service';
 
@@ -7,18 +7,60 @@ export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterda
 export const USstatsURL = 'https://disease.sh/v3/covid-19/states?yesterday=true';
 const totalStatsUl = '.total_deaths_list ul';
 const totalStatsUlList = '.total_cases_list ul';
+const totalStatsLi = '.total_cases_list ul li';
 const totalStatsHeading = '.total_deaths';
 const USstatsUl = '.us_deaths_list ul';
+const countrySpan = '.list_country';
+const hiddenClass = 'hidden';
 
-let countriesArr = [];
 let currCountry;
-countriesArr[0] = { value: 'Global' };
 
-// selected country click
-const countriesSelect = document.querySelector('#countries');
-countriesSelect.addEventListener('change', () => {
-    currCountry = countriesSelect.childNodes[0].value;
-    updateData(currCountry);
+const countryInput = document.querySelector('.country_input');
+countryInput.onclick = () => {
+    keyboardContainer.classList.remove(hiddenClass);
+};
+
+countryInput.addEventListener('input', function () {
+    let value = this.value.trim();
+    const totalStatsLiArr = document.querySelectorAll(totalStatsLi);
+    if (value != '') {
+        totalStatsLiArr.forEach((item) => {
+            const countrySpanText = item.querySelector(countrySpan).innerText;
+            if (countrySpanText.search(RegExp(value, 'gi')) == -1) {
+                item.classList.add(hiddenClass);
+            } else {
+                item.classList.remove(hiddenClass);
+            }
+        });
+    } else {
+        totalStatsLiArr.forEach((item) => {
+            item.classList.remove(hiddenClass);
+        });
+    }
+});
+
+const keyboard = new Keyboard({
+    onChange: (input) => onChange(input),
+});
+
+const keyboardContainer = document.querySelector('.simple-keyboard');
+keyboardContainer.classList.add(hiddenClass);
+
+// virtual keyboard input
+function onChange(input) {
+    countryInput.value = input;
+    const event = new Event('input');
+    countryInput.dispatchEvent(event);
+}
+
+// click not on the virtual keyboard
+document.addEventListener('click', (e) => {
+    let keyboardDiv = e.target.closest('.simple-keyboard');
+    if (keyboardDiv) return;
+    let input = document.querySelector('.country_input');
+    if (e.target !== input) {
+        keyboardContainer.classList.add(hiddenClass);
+    }
 });
 
 let tabButtons = document.querySelectorAll('.categories .tablinks');
@@ -177,7 +219,7 @@ export function setGlobalStats(url, country) {
                                             <img src=${item.countryInfo.flag} alt='flag'>
                                         </span>`;
                 // global stats
-                if (!country || country=='Global') {
+                if (!country || country == 'Global') {
                     globalStats.append(itemLi);
                     globalStatsList.append(itemLiList);
                     // if specific country clicked
@@ -186,17 +228,8 @@ export function setGlobalStats(url, country) {
                     globalStatsList.append(itemLiList);
                 }
 
-                countriesArr[index + 1] = {};
-                countriesArr[index + 1]['value'] = item.country;
-
                 const totalStats = document.querySelector(`${totalStatsHeading}`);
                 totalStats.innerHTML = `${sum.toLocaleString()}`;
-            });
-
-            const choices = new Choices(countriesSelect, {
-                choices: countriesArr,
-                silent: true,
-                shouldSort: false,
             });
 
             const totalStatsList = document.querySelector(`${totalStatsUlList}`);

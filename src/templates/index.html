@@ -4,14 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>COVID-19 Dashboard</title>
+  <title>COVID-19 Dashboard</title>y
 </head>
 
 <body>
-<<<<<<< HEAD
-=======
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
->>>>>>> d519398a498a9ac23a19a723e1681f75f7311f2c
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <div class="container">
     <header>
       <div id="hamburger-menu"></div>
@@ -47,7 +44,7 @@
             <button class="tablinks" id='per_100_thousand_btn'>Per 100 thousand</button>
           </div>
         </div>
-        
+
         <!-- Tab content -->
         <div id="deaths" class="tabcontent">
           <h2>Global Deaths</h2>
@@ -74,7 +71,7 @@
           </div>
         </div>
 
-        <select id="countries"></select>
+        <input class="country_input" type="text">
 
         <div id="deaths" class="tabcontent">
           <div class="total_cases_list list">
@@ -109,6 +106,9 @@
       <div class="graph__close">&times</div>
       <div class="histogram__popup_content">
       </div>
+    </div>
+    <div class="keyboard_wrapper">
+      <div class="simple-keyboard"></div>
     </div>
   </div>
 </body>

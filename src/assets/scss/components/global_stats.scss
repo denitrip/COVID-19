@@ -35,6 +35,9 @@
                         color: $color-red;
                     }
                 }
+                &.hidden {
+                    display: none;
+                }
             }
         }
     }
@@ -64,11 +67,30 @@
         padding: 6px 12px;
         border-top: none;
     }
+
+    .country_input {
+        margin-top: 20px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
 }
 
 .loc-cases {
     span {
         cursor: pointer;
+    }
+}
+
+.keyboard_wrapper {
+    display: flex;
+    justify-content: center;
+    .simple-keyboard {
+        width: 50%;
+        position: absolute;
+        bottom: 0;
+        &.hidden {
+            display: none;
+        }
     }
 }
 
