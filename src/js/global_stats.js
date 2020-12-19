@@ -15,6 +15,14 @@ const hiddenClass = 'hidden';
 
 let currCountry;
 
+const popupBtn = document.querySelectorAll('.popup_open');
+popupBtn.forEach((item) => {
+    item.addEventListener('click', (e) => {
+        const currSection = e.target.closest('section');
+        currSection.classList.toggle('fullscreen');
+    });
+});
+
 const countryInput = document.querySelector('.country_input');
 countryInput.onclick = () => {
     keyboardContainer.classList.remove(hiddenClass);
