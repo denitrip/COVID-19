@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <div class="container">
     <header>
       <div id="hamburger-menu"></div>
@@ -17,6 +17,7 @@
       <section class="gl-cases">
         <h2>Global Cases</h2>
         <h3 class="total_cases"></h3>
+        <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
       </section>
       <section class="map">
         <h2>Map</h2>
@@ -44,7 +45,7 @@
             <button class="tablinks" id='per_100_thousand_btn'>Per 100 thousand</button>
           </div>
         </div>
-        
+
         <!-- Tab content -->
         <div id="deaths" class="tabcontent">
           <h2>Global Deaths</h2>
@@ -53,13 +54,15 @@
             <ul></ul>
           </div>
         </div>
-
+        
+        <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
       </section>
       <section class="us">
         <h2>US State Level Deaths, Recovered</h2>
         <div class="us_deaths_list list">
           <ul></ul>
         </div>
+        <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
       </section>
       <section class="loc-cases">
         <!-- <h2>Cases by Country/Region/Sovereignty</h2> -->
@@ -71,13 +74,16 @@
           </div>
         </div>
 
-        <select id="countries"></select>
+        <input class="country_input" type="text">
+        <button class="input_btn_global">Global</button>
 
         <div id="deaths" class="tabcontent">
           <div class="total_cases_list list">
             <ul></ul>
           </div>
         </div>
+
+        <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
 
       </section>
       <section class="histogram">
@@ -100,12 +106,16 @@
         <a href="https://github.com/magklax" target="_blank">Nadezda</a>
       </div>
       <p>2020</p>
-      <a href="https://rs.school/js/" target="_blank"><img src="/assets/img/rs_school_js.svg" alt="rs school" class="icon-class"></a>
+      <a href="https://rs.school/js/" target="_blank"><img src="/assets/img/rs_school_js.svg" alt="rs school"
+          class="icon-class"></a>
     </footer>
     <div class="histogram__popup">
       <div class="graph__close">&times</div>
       <div class="histogram__popup_content">
       </div>
+    </div>
+    <div class="keyboard_wrapper">
+      <div class="simple-keyboard"></div>
     </div>
   </div>
 </body>
