@@ -6,6 +6,12 @@
     z-index: 1;
     height: 300px;
     overflow: overlay;
+    .map-rates {
+        margin-left: 25px;
+        flex-wrap: wrap;
+        column-gap: 10px;
+        row-gap: 10px;
+    }
     h2 {
         color: $color-white;
     }
@@ -44,6 +50,21 @@
             }
         }
     }
+    .radiobuttons_show_wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        .show_radiobuttons {
+            display: block;
+            margin-right: 5px;
+        }
+    }
+
+    .radiobuttons {
+        &.hidden {
+            display: none;
+        }
+    }
 
     .tab {
         display: flex;
@@ -72,7 +93,6 @@
     }
 
     .country_input {
-        margin-top: 40px;
         font-size: 14px;
         border-radius: 5px;
     }
@@ -80,7 +100,7 @@
     .popup_open {
         position: absolute;
         left: 5px;
-        top: 20px;
+        top: 10px;
         img {
             width: 30px;
         }
@@ -105,7 +125,7 @@
 .gl-deaths {
     .popup_open {
         left: 5px;
-        top: 50px;
+        top: 10px;
     }
 }
 

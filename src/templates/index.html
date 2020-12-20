@@ -23,36 +23,54 @@
         <h2>Map</h2>
       </section>
       <section class="gl-deaths">
-        <!-- Tab links -->
-        <div class="categories">
-          <div class="tab">
-            <button class="tablinks" id='deaths_btn'>Deaths</button>
-            <button class=" tablinks" id='cases_btn'>Cases</button>
-            <button class="tablinks" id='recovered_btn'>Recovered</button>
+        <div class="radiobuttons_show_wrapper">
+          <input type="checkbox" name="" class="show_radiobuttons" id="table_show_radiobuttons">
+          <label for="table_show_radiobuttons">Show Options</label>
+        </div>
+
+        <div class="table_radiobuttons radiobuttons">
+          <div id="map-period-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="cumulative" type="radio" name="period2" value="cumulative" checked="checked">
+              <label for="cumulative">Cumulative</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="daily" type="radio" name="period2" value="daily">
+              <label for="daily">Daily</label>
+            </div>
+          </div>
+
+          <div id="map-status-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="confirmed" type="radio" name="status2" value="confirmed" checked="checked">
+              <label for="confirmed">Confirmed</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="recovered" type="radio" name="status2" value="recovered">
+              <label for="recovered">Recovered</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="deaths" type="radio" name="status2" value="deaths">
+              <label for="deaths">Death</label>
+            </div>
+          </div>
+
+          <div id="map-period-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="absolute" type="radio" name="value" value="absolute" checked="checked">
+              <label for="absolute">Absolute</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="relative" type="radio" name="value" value="relative">
+              <label for="relative">Relative</label>
+            </div>
           </div>
         </div>
 
-        <div class="isAll">
-          <div class="tab">
-            <button class="tablinks active" id='all_btn'>All</button>
-            <button class="tablinks" id='last_day_btn'>Last day</button>
-          </div>
-        </div>
-
-        <div class="isAbsolute">
-          <div class="tab">
-            <button class="tablinks active" id='absolute_btn'>Absolute</button>
-            <button class="tablinks" id='per_100_thousand_btn'>Per 100 thousand</button>
-          </div>
-        </div>
-
-        <!-- Tab content -->
-        <div id="deaths" class="tabcontent">
-          <h2>Global Deaths</h2>
-          <h3 class="total_deaths"></h3>
-          <div class="total_deaths_list list">
-            <ul></ul>
-          </div>
+        <h2 class="stats_heading">Global Deaths</h2>
+        <h3 class="total_deaths"></h3>
+        <div class="total_deaths_list list">
+          <ul></ul>
         </div>
 
         <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
@@ -65,22 +83,54 @@
         <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
       </section>
       <section class="loc-cases">
-        <!-- <h2>Cases by Country/Region/Sovereignty</h2> -->
-        <div class="categories">
-          <div class="tab">
-            <button class="tablinks active" id='deaths_btn'>Deaths</button>
-            <button class=" tablinks" id='cases_btn'>Cases</button>
-            <button class="tablinks" id='recovered_btn'>Recovered</button>
+        <div class="radiobuttons_show_wrapper">
+          <input type="checkbox" name="" class="show_radiobuttons" id="list_show_radiobuttons">
+          <label for="list_show_radiobuttons">Show Options</label>
+        </div>
+        <div class="list_radiobuttons radiobuttons">
+          <div id="map-period-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="cumulative" type="radio" name="period1" value="cumulative" checked="checked">
+              <label for="cumulative">Cumulative</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="daily" type="radio" name="period1" value="daily">
+              <label for="daily">Daily</label>
+            </div>
+          </div>
+
+          <div id="map-status-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="confirmed" type="radio" name="status1" value="confirmed" checked="checked">
+              <label for="confirmed">Confirmed</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="recovered" type="radio" name="status1" value="recovered">
+              <label for="recovered">Recovered</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="deaths" type="radio" name="status1" value="deaths">
+              <label for="deaths">Death</label>
+            </div>
+          </div>
+
+          <div id="map-period-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="absolute" type="radio" name="value1" value="absolute" checked="checked">
+              <label for="absolute">Absolute</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="relative" type="radio" name="value1" value="relative">
+              <label for="relative">Relative</label>
+            </div>
           </div>
         </div>
 
         <input class="country_input" type="text">
         <button class="input_btn_global">Global</button>
 
-        <div id="deaths" class="tabcontent">
-          <div class="total_cases_list list">
-            <ul></ul>
-          </div>
+        <div class="total_cases_list list">
+          <ul></ul>
         </div>
 
         <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
