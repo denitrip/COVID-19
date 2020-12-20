@@ -4,15 +4,8 @@
         color: $color-red;
         margin-top: 0;
     }
-}
-.loc-cases {
-    .list {
-        ul {
-            li {
-                .stats_value {
-                    color: $color-red;
-                }
-            }
-        }
+    .popup_open {
+        left: 5px;
+        top: 10px;
     }
 }

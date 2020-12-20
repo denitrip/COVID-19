@@ -5,10 +5,12 @@
 @import './layouts/grid';
 
 @import './header/header';
+@import './footer/footer';
 
 // Components
-@import './components/deaths_stats.scss';
+@import './components/global_stats.scss';
 @import './components/global_cases.scss';
+@import './components/histogram.scss';
 
 @import './components/map';
 @import './components/ol';
@@ -41,8 +43,3 @@ h2 {
 button {
   cursor: pointer;
 }
-
-//     EXAMPLE
-// paths to files '../img/bg.jpg'
-
-@import 'media';

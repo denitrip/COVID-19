@@ -5,8 +5,9 @@ import './header';
 import './state';
 
 // Components
-import './deaths_stats';
+import './global_stats';
 import './global_cases';
+import './histogram';
 
 import'./map_dom';
 import'./map_utils';

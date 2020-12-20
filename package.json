@@ -9,7 +9,8 @@
   ],
   "dependencies": {
     "babel-eslint": "^10.1.0",
-    "ol": "^6.0.0-beta.15"
+    "ol": "^6.0.0-beta.15",
+    "simple-keyboard": "^2.32.66"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
