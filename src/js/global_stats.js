@@ -15,6 +15,11 @@ const hiddenClass = 'hidden';
 
 let currCountry;
 
+const inputBtnGlobal = document.querySelector('.input_btn_global');
+inputBtnGlobal.addEventListener('click', () => {
+    updateData();
+});
+
 const popupBtn = document.querySelectorAll('.popup_open');
 popupBtn.forEach((item) => {
     item.addEventListener('click', (e) => {
