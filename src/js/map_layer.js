@@ -7,13 +7,21 @@ import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
 import { pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
 
+import { utils } from './map_utils';
 import { state } from './state';
+import { updateData } from './service';
 
 const CUL_NUMBERS = [5000000, 1000000, 500000, 400000, 250000, 100000, 50000, 20000, 3000, 1000, 1];
 const DAY_NUMBERS = [50000, 10000, 5000, 4000, 2500, 1000, 500, 200, 1];
 
 const stats = document.querySelector('#map-stats');
 const statsRate = stats.querySelector('#map-stats-rate');
+const statsCountry = stats.querySelector('#map-stats-country');
+const statsCases = stats.querySelector('#map-stats-cases');
+const statsDeaths = stats.querySelector('#map-stats-deaths');
+const statsRecovered = stats.querySelector('#map-stats-recovered');
+const statsNotes = stats.querySelector('#map-stats-notes');
+
 const legend = document.querySelector('#map-legend');
 const legendRate = legend.querySelector('#map-legend-rate');
 const legendList = legend.querySelector('#map-legend-list');
@@ -62,8 +70,12 @@ const vectorPointsLayer = new VectorLayer({
   source: new VectorSource({})
 });
 
-const selectPointerMove = new Select({
+const selectPointerHover = new Select({
   condition: pointerMove,
+  layers: [vectorPointsLayer]
+});
+
+const selectPointerMove = new Select({
   layers: [vectorPointsLayer]
 });
 
@@ -226,6 +238,60 @@ const createPointLayer = () => {
   legend.dataset.period = state.rate.period;
 }
 
+const onPointHover = (evt) => {
+  const arr = evt.target.getFeatures().getArray();
+  if (!arr.length) return;
+
+  const obj = arr[0].getProperties();
+
+  statsCountry.textContent = obj.country;
+
+  if (state.rate.value === 'absolute') {
+    statsNotes.classList.add('visually-hidden');
+
+    if (state.rate.period === 'cumulative') {
+      statsCases.textContent = obj.cases;
+      statsRecovered.textContent = obj.recovered;
+      statsDeaths.textContent = obj.deaths;
+    } else {
+      statsCases.textContent = obj.todayCases;
+      statsRecovered.textContent = obj.todayRecovered;
+      statsDeaths.textContent = obj.todayDeaths;
+    }
+  } else {
+    statsNotes.classList.remove('visually-hidden');
+
+    if (state.rate.period === 'cumulative') {
+      statsCases.textContent = utils.convertToRelative(obj.cases);
+      statsRecovered.textContent = utils.convertToRelative(obj.recovered);
+      statsDeaths.textContent = utils.convertToRelative(obj.deaths);
+    } else {
+      statsCases.textContent = utils.convertToRelative(obj.todayCases);
+      statsRecovered.textContent = utils.convertToRelative(obj.todayRecovered);
+      statsDeaths.textContent = utils.convertToRelative(obj.todayDeaths);
+    }
+  }
+
+  utils.openStats(); // open statistics
+}
+
+const onPointClick = (evt) => {
+  const arr = evt.target.getFeatures().getArray();
+  if (!arr.length) return;
+
+  const obj = arr[0].getProperties();
+
+  updateData(obj.country);
+}
+
+map.field.addInteraction(selectPointerHover);
 map.field.addInteraction(selectPointerMove);
 
-export { createPointLayer, createGeoJson, selectPointerMove };
+export {
+  createPointLayer,
+  createGeoJson,
+  selectPointerHover,
+  selectPointerMove,
+  onPointClick,
+  onPointHover
+};
