@@ -36,7 +36,7 @@ countryInput.onclick = () => {
 countryInput.addEventListener('input', function () {
     let value = this.value.trim();
     const totalStatsLiArr = document.querySelectorAll(totalStatsLi);
-    if (value != '') {
+    if (value) {
         totalStatsLiArr.forEach((item) => {
             const countrySpanText = item.querySelector(countrySpan).innerText;
             if (countrySpanText.search(RegExp(value, 'gi')) == -1) {
@@ -232,7 +232,7 @@ export function setGlobalStats(url, country) {
                                             <img src=${item.countryInfo.flag} alt='flag'>
                                         </span>`;
                 // global stats
-                if (!country || country == 'Global') {
+                if (!country || country === 'Global') {
                     globalStats.append(itemLi);
                     globalStatsList.append(itemLiList);
                     // if specific country clicked
