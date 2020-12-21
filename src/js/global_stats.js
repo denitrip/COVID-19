@@ -3,6 +3,7 @@ import 'simple-keyboard/build/css/index.css';
 
 import { updateData } from './service';
 import { state } from './state';
+import { selectCountryOnMap } from './map_layer';
 
 export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
 export const USstatsURL = 'https://disease.sh/v3/covid-19/states?yesterday=true';
@@ -172,17 +173,17 @@ export function setGlobalStats(url, country) {
                                             <span class='stats_value stats_value_red'>${value.toLocaleString()}</span> <span class="list_country">${item.country}</span> 
                                             <img src=${item.countryInfo.flag} alt='flag'>
                                         </span>`;
-                                        const statsHeading=document.querySelector('.stats_heading');
+                const statsHeading = document.querySelector('.stats_heading');
                 // global stats
                 if (!country || country === 'Global') {
                     globalStats.append(itemLi);
                     globalStatsList.append(itemLiList);
-                    statsHeading.innerHTML=`Global ${field.replace('today', '')}`;
+                    statsHeading.innerHTML = `Global ${field.replace('today', '')}`;
                     // if specific country clicked
                 } else if (country == item.country) {
                     globalStats.append(itemLi);
                     globalStatsList.append(itemLiList);
-                    statsHeading.innerHTML=`${item.country} ${field.replace('today', '')}`;
+                    statsHeading.innerHTML = `${item.country} ${field.replace('today', '')}`;
                 }
 
                 const totalStats = document.querySelector(`${totalStatsHeading}`);
@@ -195,6 +196,7 @@ export function setGlobalStats(url, country) {
                 if (!listItem) return;
                 currCountry = listItem.querySelector('.list_country').innerHTML;
                 updateData(currCountry);
+                selectCountryOnMap(currCountry);
             };
         });
 }
