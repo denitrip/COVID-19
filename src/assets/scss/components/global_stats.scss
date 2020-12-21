@@ -95,6 +95,7 @@
     .country_input {
         font-size: 14px;
         border-radius: 5px;
+        margin-bottom: 10px;
     }
 
     .popup_open {
@@ -156,6 +157,20 @@
             display: none;
         }
     }
+}
+
+.simple-keyboard.myTheme1 {
+    background-color: $color-light-grey;
+}
+
+.simple-keyboard.myTheme1 .hg-button {
+    background: $color-swamp;
+    color: $color-white;
+}
+
+.simple-keyboard.myTheme1 .hg-button:active {
+    background: $color-dodger-blue;
+    color: $color-white;
 }
 
 .list_popup {

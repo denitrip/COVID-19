@@ -78,6 +78,7 @@ countryInput.addEventListener('input', function () {
 
 const keyboard = new Keyboard({
     onChange: (input) => onChange(input),
+    theme: 'hg-theme-default myTheme1',
 });
 
 const keyboardContainer = document.querySelector('.simple-keyboard');
