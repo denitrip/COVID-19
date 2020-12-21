@@ -4,8 +4,8 @@ import 'simple-keyboard/build/css/index.css';
 import { updateData } from './service';
 import { state } from './state';
 
-export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries';
-export const USstatsURL = 'https://disease.sh/v3/covid-19/states';
+export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
+export const USstatsURL = 'https://disease.sh/v3/covid-19/states?yesterday=true';
 const totalStatsUl = '.total_deaths_list ul';
 const totalStatsUlList = '.total_cases_list ul';
 const totalStatsLi = '.total_cases_list ul li';
