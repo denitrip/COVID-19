@@ -29,11 +29,16 @@ const closeLegend = () => {
   document.removeEventListener('keydown', onLegendEscPress);
 };
 
+const convertToRelative = (num) => {
+  return (num / 100000).toFixed(2)
+}
+
 const utils = {
   openStats: openStats,
   closeStats: closeStats,
   closeLegend: closeLegend,
-  openLegend: openLegend
+  openLegend: openLegend,
+  convertToRelative: convertToRelative
 }
 
 export { utils };

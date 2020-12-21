@@ -4,7 +4,7 @@ const state = {
     status: 'confirmed', //  'confirmed', 'recovered' or 'death'
     value: 'absolute', // 'absolute' or 'relative'
   },
-  url: 'https://disease.sh/v3/covid-19/countries',
+  url: 'https://disease.sh/v3/covid-19/countries?yesterday=true',
 }
 
 export { state };
