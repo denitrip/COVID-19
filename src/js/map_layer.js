@@ -3,7 +3,6 @@ import { Map, View } from 'ol';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import Circle from 'ol/geom/Circle';
 import Point from 'ol/geom/Point';
 import {fromLonLat} from 'ol/proj';
 import Feature from 'ol/Feature';
@@ -304,7 +303,7 @@ const onPointClick = (evt) => {
 map.field.addInteraction(selectPointerHover);
 map.field.addInteraction(selectPointerMove);
 
-const selectCountryonMap = (country) => {
+const selectCountryOnMap = (country) => {
   map.geojson.features.forEach((feature) => {
     if (feature.properties.country === country) {
       map.coords = feature.geometry.coordinates;
@@ -327,5 +326,5 @@ export {
   selectPointerMove,
   onPointClick,
   onPointHover,
-  selectCountryonMap
+  selectCountryOnMap
 };
