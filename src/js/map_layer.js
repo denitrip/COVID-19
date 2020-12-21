@@ -3,7 +3,10 @@ import { Map, View } from 'ol';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
+import Point from 'ol/geom/Point';
+import {fromLonLat} from 'ol/proj';
+import Feature from 'ol/Feature';
+import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style';
 import { pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
 
@@ -37,6 +40,7 @@ const map = {
   brcolor: null,
   radius: null,
   numbers: null,
+  coords: null
 }
 
 // map style
@@ -70,6 +74,18 @@ const vectorPointsLayer = new VectorLayer({
   source: new VectorSource({})
 });
 
+const vectorSelectLayer = new VectorLayer({
+  source: new VectorSource({}),
+  style: new Style({
+    image: new CircleStyle({
+      radius: 15,
+      fill: new Fill({
+        color: 'rgba(189, 178, 255, 0.3)',
+      }),
+    })
+  })
+});
+
 const selectPointerHover = new Select({
   condition: pointerMove,
   layers: [vectorPointsLayer]
@@ -80,7 +96,7 @@ const selectPointerMove = new Select({
 });
 
 map.field = new Map({
-  layers: [vectorMapLayer, vectorPointsLayer],
+  layers: [vectorMapLayer, vectorSelectLayer, vectorPointsLayer],
   target: 'map',
   view: new View({
     center: [0, 0],
@@ -186,7 +202,7 @@ const createPointStyle = (feature) => {
   }
 
   return new Style({
-    image: new Circle({
+    image: new CircleStyle({
       radius: map.radius,
       fill: new Fill({
         color: map.bgcolor,
@@ -224,7 +240,7 @@ const createPointLayer = () => {
 
   vectorPointsLayer.setSource(
     new VectorSource({
-      features: new GeoJSON().readFeatures(map.geojson, {featureProjection: 'EPSG:3857'}),
+      features: new GeoJSON().readFeatures(map.geojson, { featureProjection: 'EPSG:3857' }),
     })
   );
 
@@ -287,11 +303,28 @@ const onPointClick = (evt) => {
 map.field.addInteraction(selectPointerHover);
 map.field.addInteraction(selectPointerMove);
 
+const selectCountryOnMap = (country) => {
+  map.geojson.features.forEach((feature) => {
+    if (feature.properties.country === country) {
+      map.coords = feature.geometry.coordinates;
+    }
+  });
+
+  const source = new VectorSource({
+    features: [
+      new Feature(new Point(fromLonLat(map.coords)))
+    ],
+  });
+
+  vectorSelectLayer.setSource(source);
+}
+
 export {
   createPointLayer,
   createGeoJson,
   selectPointerHover,
   selectPointerMove,
   onPointClick,
-  onPointHover
+  onPointHover,
+  selectCountryOnMap
 };
