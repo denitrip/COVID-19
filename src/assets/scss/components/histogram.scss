@@ -59,6 +59,7 @@
 
 .histogram__popup {
     position: absolute;
+    z-index: 99;
     top: 0px;
     margin-top: 100px;
     display: none;

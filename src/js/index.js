@@ -5,15 +5,16 @@ import './header';
 import './state';
 
 // Components
+import './map_dom';
+
 import './global_stats';
 import './global_cases';
 import './histogram';
 
-import'./map_dom';
-import'./map_utils';
-import'./map_layer';
+import './map_utils';
+import './map_layer';
 
-import'./events';
+import './events';
 
 // EXAMPLE
 // tablesort lib

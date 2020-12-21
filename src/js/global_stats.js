@@ -2,6 +2,8 @@ import Keyboard from 'simple-keyboard';
 import 'simple-keyboard/build/css/index.css';
 
 import { updateData } from './service';
+import { state } from './state';
+import { selectCountryOnMap } from './map_layer';
 
 export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
 export const USstatsURL = 'https://disease.sh/v3/covid-19/states?yesterday=true';
@@ -14,6 +16,28 @@ const countrySpan = '.list_country';
 const hiddenClass = 'hidden';
 
 let currCountry;
+
+const showTableBtn = document.querySelector('#table_show_radiobuttons');
+let tableRadioButtons = document.querySelector('.table_radiobuttons');
+tableRadioButtons.classList.add(hiddenClass);
+showTableBtn.addEventListener('change', () => {
+    if (showTableBtn.checked) {
+        tableRadioButtons.classList.remove(hiddenClass);
+    } else {
+        tableRadioButtons.classList.add(hiddenClass);
+    }
+});
+
+const showListBtn = document.querySelector('#list_show_radiobuttons');
+let ListRadioButtons = document.querySelector('.list_radiobuttons');
+ListRadioButtons.classList.add(hiddenClass);
+showListBtn.addEventListener('change', () => {
+    if (showListBtn.checked) {
+        ListRadioButtons.classList.remove(hiddenClass);
+    } else {
+        ListRadioButtons.classList.add(hiddenClass);
+    }
+});
 
 const inputBtnGlobal = document.querySelector('.input_btn_global');
 inputBtnGlobal.addEventListener('click', () => {
@@ -75,121 +99,40 @@ document.addEventListener('click', (e) => {
         keyboardContainer.classList.add(hiddenClass);
     }
 });
-
-let tabButtons = document.querySelectorAll('.categories .tablinks');
-tabButtons.forEach((item) => {
-    item.addEventListener('click', () => {
-        // remove "_btn" from id's
-        let correctId = item.id.substring(0, item.id.indexOf('_btn'));
-        showTabContent(event, correctId);
-        updateData(currCountry);
-    });
-});
-
-// default opened tab "Deaths"
-tabButtons[0].click();
-
-let thousandBtn = document.querySelector('#per_100_thousand_btn');
-thousandBtn.addEventListener('click', () => {
-    thousandBtn.classList.add('active');
-    absoluteBtn.classList.remove('active');
-    updateData(currCountry);
-});
-
-let absoluteBtn = document.querySelector('#absolute_btn');
-absoluteBtn.addEventListener('click', () => {
-    absoluteBtn.classList.add('active');
-    thousandBtn.classList.remove('active');
-    updateData(currCountry);
-});
-
-let allBtn = document.querySelector('#all_btn');
-allBtn.addEventListener('click', () => {
-    allBtn.classList.add('active');
-    lastDayBtn.classList.remove('active');
-    updateData(currCountry);
-});
-
-let lastDayBtn = document.querySelector('#last_day_btn');
-lastDayBtn.addEventListener('click', () => {
-    lastDayBtn.classList.add('active');
-    allBtn.classList.remove('active');
-    updateData(currCountry);
-});
-
-function showTabContent(e, field) {
-    // remove "active" class from all elements
-    let tablinks = document.querySelectorAll('.categories .tablinks');
-    tablinks.forEach((item) => {
-        if (item.id !== field + '_btn') {
-            item.className = item.className.replace('active', '');
-        }
-    });
-
-    // add "active" class for clicked element
-    tablinks.forEach((item) => {
-        if (item.id == field + '_btn') {
-            item.classList.add('active');
-        }
-    });
-}
+updateData(currCountry);
 
 export function checkField() {
-    let tablinks = document.querySelectorAll('.categories .tablinks');
     let field;
-    tablinks.forEach((item) => {
-        if (item.classList.contains('active')) {
-            field = item.id.substring(0, item.id.indexOf('_btn'));
-        }
-    });
 
-    let isAllBtns = document.querySelectorAll('.isAll .tablinks');
-    let isAll;
-    isAllBtns.forEach((item) => {
-        if (item.classList.contains('active')) {
-            if (item.id === 'all_btn') {
-                isAll = true;
-            } else {
-                isAll = false;
-            }
+    if (state.rate.period === 'cumulative') {
+        if (state.rate.status === 'confirmed') {
+            field = 'cases';
+        } else {
+            field = state.rate.status;
         }
-    });
-
-    let res = {};
-    if (isAll) {
-        res.field = field;
     } else {
-        res.field = 'today' + field[0].toUpperCase() + field.slice(1);
+        if (state.rate.status === 'confirmed') {
+            field = 'todayCases';
+        } else {
+            field = 'today' + state.rate.status[0].toUpperCase() + state.rate.status.slice(1);
+        }
     }
-    res.isAll = isAll;
 
-    return res;
+    return field;
 }
 
 export function sortArr(result) {
-    let isAbsoluteBtns = document.querySelectorAll('.isAbsolute .tablinks');
-    let isAbsolute;
-    isAbsoluteBtns.forEach((item) => {
-        if (item.classList.contains('active')) {
-            if (item.id === 'absolute_btn') {
-                isAbsolute = true;
-            } else {
-                isAbsolute = false;
-            }
-        }
-    });
+    let field = checkField();
 
-    let field = checkField().field;
-
-    if (isAbsolute) {
+    if (state.rate.value === 'absolute') {
         result.sort((a, b) => {
             return b[`${field}`] - a[`${field}`];
         });
     } else {
         for (let i = 0; i < result.length; i += 1) {
             result[i][`${field}`] = (result[i][`${field}`] / result[i]['population']) * 100000;
-            if (!result[i][`${field}`] || result[i][`${field}`] == Infinity) {
-                result[i][`${field}`] = 0;
+            if (result[i]['population'] === 0) {
+                result[i][`${field}`] = 1;
             }
         }
         result.sort((a, b) => {
@@ -212,9 +155,8 @@ export function setGlobalStats(url, country) {
             globalStatsList.innerHTML = '';
 
             sortArr(result);
-            let field = checkField().field;
-
-            result.forEach((item, index) => {
+            let field = checkField();
+            result.forEach((item) => {
                 let value = item[`${field}`];
                 if (!value) {
                     value = 0;
@@ -231,14 +173,17 @@ export function setGlobalStats(url, country) {
                                             <span class='stats_value stats_value_red'>${value.toLocaleString()}</span> <span class="list_country">${item.country}</span> 
                                             <img src=${item.countryInfo.flag} alt='flag'>
                                         </span>`;
+                const statsHeading = document.querySelector('.stats_heading');
                 // global stats
                 if (!country || country === 'Global') {
                     globalStats.append(itemLi);
                     globalStatsList.append(itemLiList);
+                    statsHeading.innerHTML = `Global ${field.replace('today', '')}`;
                     // if specific country clicked
                 } else if (country == item.country) {
                     globalStats.append(itemLi);
                     globalStatsList.append(itemLiList);
+                    statsHeading.innerHTML = `${item.country} ${field.replace('today', '')}`;
                 }
 
                 const totalStats = document.querySelector(`${totalStatsHeading}`);
@@ -251,6 +196,7 @@ export function setGlobalStats(url, country) {
                 if (!listItem) return;
                 currCountry = listItem.querySelector('.list_country').innerHTML;
                 updateData(currCountry);
+                selectCountryOnMap(currCountry);
             };
         });
 }
@@ -263,7 +209,7 @@ export function setUSstats(url) {
             USstats.innerHTML = '';
 
             sortArr(result);
-            let field = checkField().field;
+            let field = checkField();
 
             result.forEach((item) => {
                 let value = item[`${field}`];
