@@ -10,11 +10,9 @@
 
     &__full-screen {
         position: absolute;
-        right: 0px;
-        top: 0px;
-        margin: 420px 20px 0px 0px;
+        right: 5px;
+        top: 10px;
         width: 30px;
-        height: 30px;
     
         &:hover {
             cursor: pointer;
@@ -51,6 +49,10 @@
             cursor: pointer;
         }
     }
+}
+
+.histogram {
+    position: relative;
 }
 
 .left-arrow, .right-arrow {

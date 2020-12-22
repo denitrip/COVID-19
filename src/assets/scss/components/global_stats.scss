@@ -150,8 +150,9 @@
     display: flex;
     justify-content: center;
     .simple-keyboard {
-        width: 50%;
-        position: absolute;
+        width: 450px;
+        z-index: 99;
+        position: fixed;
         bottom: 0;
         &.hidden {
             display: none;
