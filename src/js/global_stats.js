@@ -1,5 +1,6 @@
 import Keyboard from 'simple-keyboard';
 import 'simple-keyboard/build/css/index.css';
+import { sortAbsolute, rewritePerThousandPopulation } from './sort_util';
 
 import { updateData } from './service';
 
@@ -182,21 +183,10 @@ export function sortArr(result) {
     let field = checkField().field;
 
     if (isAbsolute) {
-        result.sort((a, b) => {
-            return b[`${field}`] - a[`${field}`];
-        });
+        sortAbsolute(result, field);
     } else {
-        for (let i = 0; i < result.length; i += 1) {
-            result[i][`${field}`] = (result[i][`${field}`] / result[i]['population']) * 100000;
-            if (!result[i][`${field}`] || result[i][`${field}`] == Infinity) {
-                result[i][`${field}`] = 0;
-            }
-        }
-        result.sort((a, b) => {
-            if (a[`${field}`] && b[`${field}`]) {
-                return b[`${field}`] - a[`${field}`];
-            }
-        });
+        rewritePerThousandPopulation(result, field);
+        sortAbsolute(result, field);
     }
 }
 
