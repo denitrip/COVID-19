@@ -38,7 +38,7 @@ module.exports = {
                 use: ['babel-loader'],
             },
             {
-                test: /\.(png|gif|jpe?g|svg)$/i,
+                test: /\.(png|gif|jpe?g|svg|ico)$/i,
                 use: [
                     {
                         loader: 'file-loader',
@@ -79,6 +79,10 @@ module.exports = {
                 {
                     from: path.resolve(environment.paths.source, 'data', ''),
                     to: path.resolve(environment.paths.output, 'data', ''),
+                },
+                {
+                    from: path.resolve(environment.paths.source, '', 'favicon.ico'),
+                    to: path.resolve(environment.paths.output, '', 'favicon.ico'),
                 },
             ],
         }),
