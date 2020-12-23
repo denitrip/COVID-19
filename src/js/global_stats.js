@@ -4,6 +4,7 @@ import 'simple-keyboard/build/css/index.css';
 import { updateData } from './service';
 import { state } from './state';
 import { selectCountryOnMap } from './map_layer';
+import { countryView } from './histogram'
 
 export const globalStatsURL = 'https://disease.sh/v3/covid-19/countries?yesterday=true';
 export const USstatsURL = 'https://disease.sh/v3/covid-19/states?yesterday=true';
@@ -99,6 +100,7 @@ document.addEventListener('click', (e) => {
         keyboardContainer.classList.add(hiddenClass);
     }
 });
+countryView(currCountry);
 updateData(currCountry);
 
 export function checkField() {
@@ -195,6 +197,7 @@ export function setGlobalStats(url, country) {
                 let listItem = e.target.closest('.list_item');
                 if (!listItem) return;
                 currCountry = listItem.querySelector('.list_country').innerHTML;
+                countryView(currCountry);
                 updateData(currCountry);
                 selectCountryOnMap(currCountry);
             };
