@@ -5,6 +5,9 @@
     position: relative;
     z-index: 1;
     height: 300px;
+    @include resolution(tablet) {
+        height: 349px;
+    }
     overflow: auto;
     .map-rates {
         margin-left: 25px;
@@ -173,16 +176,6 @@
 .simple-keyboard.myTheme1 .hg-button:active {
     background: $color-dodger-blue;
     color: $color-white;
-}
-
-.list_popup {
-    position: absolute;
-    top: 0px;
-    margin-top: 100px;
-    display: none;
-    width: 99%;
-    height: 86%;
-    background-color: #404040;
 }
 
 ::-webkit-scrollbar {

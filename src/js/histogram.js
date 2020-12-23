@@ -1,15 +1,8 @@
 import { state } from './state';
 
-const displayNone = 'none',
-      displayBlock = 'block',
-      bar = 'bar',
+const bar = 'bar',
       line = 'line',
-      graphFullScreen = '.graph__full-screen',
-      popupContent = '.histogram__popup_content',
-      popup = '.histogram__popup',
       graphPopup = '.graph__popup',
-      graphButtons = '.graph__buttons',
-      graphClose = '.graph__close',
       graph = '.graph',
       dailyCases = 'Daily Confirmed',
       dailyDeaths = 'Daily Deaths',
@@ -71,62 +64,6 @@ const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesD
     } else {
         createGraph(keys, valuesCases, cumulativeCases, line);
     }
-    
-    document.querySelector(graphFullScreen).addEventListener('click', () => {
-        
-        document.querySelector(popupContent).innerHTML = '';
-        document.querySelector(popup).style.display = displayBlock;
-
-        document.querySelector(popupContent).innerHTML += `
-            <div class=${graphPopup.slice(1)}></div>
-            <div class=${graphButtons}>
-                <div id="map-period-rates" class="map-rates">
-                    <div class="map-rates__wrapper">
-                        <input id="cumulative" type="radio" name="period3" value="cumulative" checked="checked">
-                        <label for="cumulative">Cumulative</label>
-                    </div>
-                    <div class="map-rates__wrapper">
-                        <input id="daily" type="radio" name="period3" value="daily">
-                        <label for="daily">Daily</label>
-                    </div>
-                </div>
-                <div id="map-status-rates" class="map-rates">
-                    <div class="map-rates__wrapper">
-                        <input id="confirmed" type="radio" name="status3" value="confirmed" checked="checked">
-                        <label for="confirmed">Confirmed</label>
-                    </div>
-                    <div class="map-rates__wrapper">
-                        <input id="recovered" type="radio" name="status3" value="recovered">
-                        <label for="recovered">Recovered</label>
-                    </div>
-                    <div class="map-rates__wrapper">
-                        <input id="deaths" type="radio" name="status3" value="deaths">
-                        <label for="deaths">Death</label>
-                    </div>
-                </div>
-                <div id="map-period-rates" class="map-rates">
-                    <div class="map-rates__wrapper">
-                        <input id="absolute" type="radio" name="value3" value="absolute" checked="checked">
-                        <label for="absolute">Absolute</label>
-                    </div>
-                    <div class="map-rates__wrapper">
-                        <input id="relative" type="radio" name="value3" value="relative">
-                        <label for="relative">Relative</label>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
-
-        [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
-            choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
-        }));
-    });
-
-    document.querySelector(graphClose).addEventListener('click', () => {
-        document.querySelector(popup).style.display = displayNone;
-    });
 
     [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
         choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
