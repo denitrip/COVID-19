@@ -56,11 +56,11 @@ document.querySelector('.map').innerHTML =
     <div class="map-rates">
       <div class="map-rates__wrapper">
         <input id="absolute" type="radio" name="value" value="absolute" checked="checked">
-        <label for="absolute">Confirmed Cases</label>
+        <label for="absolute">absolute Cases</label>
       </div>
       <div class="map-rates__wrapper">
         <input id="relative" type="radio" name="value" value="relative">
-        <label for="relative">Recovered Cases</label>
+        <label for="relative">Relative Cases</label>
       </div>
     </div>
   </div>`;
