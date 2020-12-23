@@ -17,7 +17,7 @@ const USstatsUl = '.us_deaths_list ul';
 const countrySpan = '.list_country';
 const hiddenClass = 'hidden';
 
-let currCountry;
+export let currCountry;
 
 const showTableBtn = document.querySelector('#table_show_radiobuttons');
 let tableRadioButtons = document.querySelector('.table_radiobuttons');
@@ -43,6 +43,7 @@ showListBtn.addEventListener('change', () => {
 
 const inputBtnGlobal = document.querySelector('.input_btn_global');
 inputBtnGlobal.addEventListener('click', () => {
+    currCountry=null;
     updateData();
 });
 
