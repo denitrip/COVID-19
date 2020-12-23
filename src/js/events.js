@@ -1,6 +1,7 @@
 import { utils } from './map_utils';
 import { state } from './state';
 import { createPointLayer, createGeoJson, selectPointerHover, selectPointerMove, onPointHover, onPointClick } from './map_layer';
+import { updateData } from './service';
 
 const stats = document.querySelector('#map-stats');
 const statsClose = stats.querySelector('#map-stats-close');
@@ -14,11 +15,17 @@ const onInputChanged = (evt) => {
   utils.closeStats();
   utils.closeLegend();
 
-  //  change type of rate
-  state.rate[evt.target.name] = evt.target.value;
-  // redraw map
-  createPointLayer();
-}
+    //  change type of rate
+    state.rate[evt.target.name] = evt.target.value;
+
+    document.querySelectorAll(`#${evt.target.value}`).forEach((item) => {
+        item.checked = true;
+    });
+    updateData();
+
+    // redraw map
+    createPointLayer();
+};
 
 window.addEventListener('load', () => {
   // create geo json for map

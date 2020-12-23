@@ -1,10 +1,12 @@
 footer {
     display: flex;
-    justify-content: space-between;
-    width: 30vw;
-    align-items: center;
-    margin: 4% auto;
+    justify-content: center;
+    margin-top: 50px;
+    column-gap: 80px;
     font-size: 16px;
+    @include resolution(desktop) {
+        margin-top: 10px;
+    }
 }
 .footer-rows {
     display: flex;
@@ -15,7 +17,8 @@ footer {
     width: 90px;
     height: 70px;
     margin-left: 20px;
-    background-color: $color-dark-grey;
+    background-color: $color-light-grey;
+    border-radius: 10px;
 
     &:hover {
         background-color: $color-white;

@@ -13,6 +13,7 @@ import Select from 'ol/interaction/Select';
 import { utils } from './map_utils';
 import { state } from './state';
 import { updateData } from './service';
+import { countryView } from './histogram'
 
 const CUL_NUMBERS = [5000000, 1000000, 500000, 400000, 250000, 100000, 50000, 20000, 3000, 1000, 1];
 const DAY_NUMBERS = [50000, 10000, 5000, 4000, 2500, 1000, 500, 200, 1];
@@ -297,6 +298,7 @@ const onPointClick = (evt) => {
 
   const obj = arr[0].getProperties();
 
+  countryView(obj.country);
   updateData(obj.country);
 }
 

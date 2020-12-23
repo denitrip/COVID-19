@@ -130,6 +130,10 @@
 			fill: $color-dodger-blue;
 		}
 	}
+
+	&-rates__wrapper {
+		margin-left: 10px;
+	}
 }
 
 //  stats
@@ -197,11 +201,12 @@
 .map-rates {
 	display: flex;
 	margin-bottom: 15px;
+	margin-left: 25px;
 
 	&__wrapper {
 		display: flex;
 		align-items: center;
-		margin-right: 5px;
+		margin-right: 15px;
 	}
 
   input {

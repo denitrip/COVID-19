@@ -5,7 +5,13 @@
     position: relative;
     z-index: 1;
     height: 300px;
-    overflow: overlay;
+    overflow: auto;
+    .map-rates {
+        margin-left: 25px;
+        flex-wrap: wrap;
+        column-gap: 10px;
+        row-gap: 10px;
+    }
     h2 {
         color: $color-white;
     }
@@ -44,6 +50,21 @@
             }
         }
     }
+    .radiobuttons_show_wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        .show_radiobuttons {
+            display: block;
+            margin-right: 5px;
+        }
+    }
+
+    .radiobuttons {
+        &.hidden {
+            display: none;
+        }
+    }
 
     .tab {
         display: flex;
@@ -72,15 +93,15 @@
     }
 
     .country_input {
-        margin-top: 40px;
         font-size: 14px;
         border-radius: 5px;
+        margin-bottom: 10px;
     }
 
     .popup_open {
         position: absolute;
         left: 5px;
-        top: 20px;
+        top: 10px;
         img {
             width: 30px;
         }
@@ -105,7 +126,7 @@
 .gl-deaths {
     .popup_open {
         left: 5px;
-        top: 50px;
+        top: 10px;
     }
 }
 
@@ -129,13 +150,28 @@
     display: flex;
     justify-content: center;
     .simple-keyboard {
-        width: 50%;
-        position: absolute;
+        width: 450px;
+        z-index: 99;
+        position: fixed;
         bottom: 0;
         &.hidden {
             display: none;
         }
     }
+}
+
+.simple-keyboard.myTheme1 {
+    background-color: $color-light-grey;
+}
+
+.simple-keyboard.myTheme1 .hg-button {
+    background: $color-swamp;
+    color: $color-white;
+}
+
+.simple-keyboard.myTheme1 .hg-button:active {
+    background: $color-dodger-blue;
+    color: $color-white;
 }
 
 .list_popup {
