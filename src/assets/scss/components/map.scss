@@ -154,10 +154,6 @@
 			width: 30px;
 		}
 	}
-
-	&-rates__wrapper {
-		margin-left: 10px;
-	}
 }
 
 //  stats
@@ -227,10 +223,15 @@
 	margin-bottom: 15px;
 	margin-left: 25px;
 
+	&__container {
+		padding: 10px 0;
+	}
+
 	&__wrapper {
 		display: flex;
 		align-items: center;
 		margin-right: 15px;
+		margin-left: 10px;
 	}
 
   input {
