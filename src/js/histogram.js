@@ -1,114 +1,120 @@
 import { state } from './state';
 
 const bar = 'bar',
-      line = 'line',
-      graphPopup = '.graph__popup',
-      graph = '.graph',
-      dailyCases = 'Daily Confirmed',
-      dailyDeaths = 'Daily Deaths',
-      dailyRecovered = 'Daily Recovered',
-      cumulativeCases = 'Cumulative Confirmed',
-      cumulativeDeaths = 'Cumulative Deaths',
-      cumulativeRecovered = 'Cumulative Recovered',
-      chart = 'myChart',
-      chartFullScreen = 'myChartFullScreen',
-      colorBackgroundGraph = 'rgba(255, 159, 64, 0.2)',
-      colorBackgroundOpacityZero = 'rgba(255, 159, 64, 0)',
-      colorBorderGraph = 'rgba(255, 159, 64, 1)',
-      urlHistoricalGlobal = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366',
-      urlHistoricalCountry = 'https://api.covid19api.com/total/country/',
-      urlGlobal = 'https://disease.sh/v3/covid-19/countries?yesterday=true',
-      relative = 'relative',
-      inputButton = '.map-rates__wrapper input';
- 
-const setWorldGraph = (url) => {
-    fetch(url).then((response) => response.json()).then((res) => {
-        const keys = Object.keys(res.cases),
-              valuesCases = Object.values(res.cases),
-              valuesDeaths = Object.values(res.deaths),
-              valuesRecovered = Object.values(res.recovered),
-              valuesCasesDaily = countDaily(valuesCases),
-              valuesDeathsDaily = countDaily(valuesDeaths),
-              valuesRecoveredDaily = countDaily(valuesRecovered);
+    line = 'line',
+    graph = '.graph',
+    dailyCases = 'Daily Confirmed',
+    dailyDeaths = 'Daily Deaths',
+    dailyRecovered = 'Daily Recovered',
+    cumulativeCases = 'Cumulative Confirmed',
+    cumulativeDeaths = 'Cumulative Deaths',
+    cumulativeRecovered = 'Cumulative Recovered',
+    chart = 'myChart',
+    colorBackgroundGraph = 'rgba(255, 159, 64, 0.2)',
+    colorBackgroundOpacityZero = 'rgba(255, 159, 64, 0)',
+    colorBorderGraph = 'rgba(255, 159, 64, 1)',
+    urlHistoricalGlobal = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366',
+    urlHistoricalCountry = 'https://api.covid19api.com/total/country/',
+    urlGlobal = 'https://disease.sh/v3/covid-19/countries?yesterday=true',
+    relative = 'relative',
+    inputButton = '.map-rates__wrapper input';
 
-        ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
-    });
-}
+const setWorldGraph = (url) => {
+    fetch(url)
+        .then((response) => response.json())
+        .then((res) => {
+            const keys = Object.keys(res.cases),
+                valuesCases = Object.values(res.cases),
+                valuesDeaths = Object.values(res.deaths),
+                valuesRecovered = Object.values(res.recovered),
+                valuesCasesDaily = countDaily(valuesCases),
+                valuesDeathsDaily = countDaily(valuesDeaths),
+                valuesRecoveredDaily = countDaily(valuesRecovered);
+
+            ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
+        });
+};
 
 const setCountryGraph = (url, country) => {
-    fetch(url).then((response) => response.json()).then((res) => {
-        let keys = [],
-            valuesCases = [],
-            valuesDeaths = [],
-            valuesRecovered = [],
-            valuesCasesDaily = [],
-            valuesDeathsDaily = [],
-            valuesRecoveredDaily = [];
+    fetch(url)
+        .then((response) => response.json())
+        .then((res) => {
+            let keys = [],
+                valuesCases = [],
+                valuesDeaths = [],
+                valuesRecovered = [],
+                valuesCasesDaily = [],
+                valuesDeathsDaily = [],
+                valuesRecoveredDaily = [];
 
-        res.forEach(elem => {
-            keys.push(elem.Date.slice(0, 10));
-            valuesCases.push(elem.Confirmed);
-            valuesDeaths.push(elem.Deaths);
-            valuesRecovered.push(elem.Recovered);
+            res.forEach((elem) => {
+                keys.push(elem.Date.slice(0, 10));
+                valuesCases.push(elem.Confirmed);
+                valuesDeaths.push(elem.Deaths);
+                valuesRecovered.push(elem.Recovered);
+            });
+
+            (valuesCasesDaily = countDaily(valuesCases)), (valuesDeathsDaily = countDaily(valuesDeaths)), (valuesRecoveredDaily = countDaily(valuesRecovered));
+
+            ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
         });
-
-        valuesCasesDaily = countDaily(valuesCases),
-        valuesDeathsDaily = countDaily(valuesDeaths),
-        valuesRecoveredDaily = countDaily(valuesRecovered);
-
-        ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
-    });
-}
+};
 
 const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country) => {
     if (country) {
         choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
 
-        [... document.querySelectorAll(inputButton)].forEach((input) => input.addEventListener('change', () => {
-            choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
-        }));
+        [...document.querySelectorAll(inputButton)].forEach((input) =>
+            input.addEventListener('change', () => {
+                choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
+            })
+        );
     } else {
         createGraph(keys, valuesCases, cumulativeCases, line);
 
-        [... document.querySelectorAll(inputButton)].forEach((input) => input.addEventListener('change', () => {
-            choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, false);
-        }));
+        [...document.querySelectorAll(inputButton)].forEach((input) =>
+            input.addEventListener('change', () => {
+                choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, false);
+            })
+        );
     }
-}
+};
 
 const setPopulationCountry = (url, country, keys, value, nameMetrics, type) => {
     let numberPopulation;
     let arr = [];
-    fetch(url).then((response) => response.json()).then((res) => {
-        res.forEach(elem => {
-            if (elem.country === country) {
-                numberPopulation = elem.population;
-            }
-        });
-        value.forEach(elem => {
-            arr.push((elem / numberPopulation) * 100000);
-        });
+    fetch(url)
+        .then((response) => response.json())
+        .then((res) => {
+            res.forEach((elem) => {
+                if (elem.country === country) {
+                    numberPopulation = elem.population;
+                }
+            });
+            value.forEach((elem) => {
+                arr.push((elem / numberPopulation) * 100000);
+            });
 
-        createGraph(keys, arr, nameMetrics, type);
-    });
-}
+            createGraph(keys, arr, nameMetrics, type);
+        });
+};
 
 const setPopulationGlobal = (url, keys, value, nameMetrics, type) => {
     let numberPopulation = 0;
     let arr = [];
-    fetch(url).then((response) => response.json()).then((res) => {
-        res.forEach(elem => {
-            numberPopulation += elem.population;
-        });
-        value.forEach(elem => {
-            arr.push((elem / numberPopulation) * 100000);
-        });
-        
-        createGraph(keys, arr, nameMetrics, type);
-    });
+    fetch(url)
+        .then((response) => response.json())
+        .then((res) => {
+            res.forEach((elem) => {
+                numberPopulation += elem.population;
+            });
+            value.forEach((elem) => {
+                arr.push((elem / numberPopulation) * 100000);
+            });
 
-}
-
+            createGraph(keys, arr, nameMetrics, type);
+        });
+};
 
 const checkBtn = () => {
     let nameMetricsIndicator;
@@ -130,10 +136,10 @@ const checkBtn = () => {
         }
     }
     return nameMetricsIndicator;
-}
+};
 
 const choiceIndicator = (nameMetrics, keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country) => {
-    switch(nameMetrics) {
+    switch (nameMetrics) {
         case dailyCases:
             if (state.rate.value === relative) {
                 if (country) {
@@ -201,7 +207,7 @@ const choiceIndicator = (nameMetrics, keys, valuesCases, valuesDeaths, valuesRec
             }
             break;
     }
-}
+};
 
 const countDaily = (value) => {
     let valuesDaily = [];
@@ -213,9 +219,9 @@ const countDaily = (value) => {
         }
     });
     return valuesDaily;
-}
+};
 
-const createGraph = (key, value, title, type, full) => {
+const createGraph = (key, value, title, type) => {
     let color;
     if (type === bar) {
         color = colorBackgroundGraph;
@@ -224,43 +230,43 @@ const createGraph = (key, value, title, type, full) => {
     }
 
     let nameIdChart;
-    if (full) {
-        document.querySelector(graphPopup).innerHTML = `<canvas id=${chartFullScreen}></canvas>`;
-        nameIdChart = chartFullScreen;
-    } else {
-        document.querySelector(graph).innerHTML = `<canvas id=${chart}></canvas>`;
-        nameIdChart = chart;
-    }
- 
+
+    document.querySelector(graph).innerHTML = `<canvas style="max-height: 700px" id=${chart}></canvas>`;
+    nameIdChart = chart;
+
     var ctx = document.querySelectorAll(`#${nameIdChart}`);
     var myChart = new Chart(ctx, {
         type: type,
         data: {
             labels: key,
-            datasets: [{
-                label: title,
-                data: value,
-                backgroundColor: color,
-                borderColor: colorBorderGraph,
-                borderWidth: 1
-            }]
+            datasets: [
+                {
+                    label: title,
+                    data: value,
+                    backgroundColor: color,
+                    borderColor: colorBorderGraph,
+                    borderWidth: 1,
+                },
+            ],
         },
         options: {
             scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    },
+                ],
+            },
+        },
     });
-}
+};
 
 export const countryView = (country) => {
     if (country) {
         setCountryGraph(`${urlHistoricalCountry}${country}`, country);
     }
-}
+};
 
 setWorldGraph(urlHistoricalGlobal);
