@@ -144,7 +144,13 @@
 }
 
 .loc-cases {
-    height: 349px;
+    height: 400px;
+    @include resolution(desktop) {
+        height: 300px;
+    }
+    @include resolution(tablet) {
+        height: 349px;
+    }
     span {
         cursor: pointer;
     }
