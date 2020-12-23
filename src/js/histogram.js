@@ -16,7 +16,10 @@ const bar = 'bar',
       colorBackgroundOpacityZero = 'rgba(255, 159, 64, 0)',
       colorBorderGraph = 'rgba(255, 159, 64, 1)',
       urlHistoricalGlobal = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366',
-      urlHistoricalCountry = 'https://api.covid19api.com/total/country/';
+      urlHistoricalCountry = 'https://api.covid19api.com/total/country/',
+      urlGlobal = 'https://disease.sh/v3/covid-19/countries?yesterday=true',
+      relative = 'relative',
+      inputButton = '.map-rates__wrapper input';
  
 const setWorldGraph = (url) => {
     fetch(url).then((response) => response.json()).then((res) => {
@@ -53,22 +56,59 @@ const setCountryGraph = (url, country) => {
         valuesDeathsDaily = countDaily(valuesDeaths),
         valuesRecoveredDaily = countDaily(valuesRecovered);
 
-        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
         ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
     });
 }
 
 const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country) => {
     if (country) {
-        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
+        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
+
+        [... document.querySelectorAll(inputButton)].forEach((input) => input.addEventListener('change', () => {
+            choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
+        }));
     } else {
         createGraph(keys, valuesCases, cumulativeCases, line);
-    }
 
-    [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
-        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
-    }));
+        [... document.querySelectorAll(inputButton)].forEach((input) => input.addEventListener('change', () => {
+            choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, false);
+        }));
+    }
 }
+
+const setPopulationCountry = (url, country, keys, value, nameMetrics, type) => {
+    let numberPopulation;
+    let arr = [];
+    fetch(url).then((response) => response.json()).then((res) => {
+        res.forEach(elem => {
+            if (elem.country === country) {
+                numberPopulation = elem.population;
+            }
+        });
+        value.forEach(elem => {
+            arr.push((elem / numberPopulation) * 100000);
+        });
+
+        createGraph(keys, arr, nameMetrics, type);
+    });
+}
+
+const setPopulationGlobal = (url, keys, value, nameMetrics, type) => {
+    let numberPopulation = 0;
+    let arr = [];
+    fetch(url).then((response) => response.json()).then((res) => {
+        res.forEach(elem => {
+            numberPopulation += elem.population;
+        });
+        value.forEach(elem => {
+            arr.push((elem / numberPopulation) * 100000);
+        });
+        
+        createGraph(keys, arr, nameMetrics, type);
+    });
+
+}
+
 
 const checkBtn = () => {
     let nameMetricsIndicator;
@@ -92,31 +132,73 @@ const checkBtn = () => {
     return nameMetricsIndicator;
 }
 
-const choiceIndicator = (nameMetrics, keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, full) => {
+const choiceIndicator = (nameMetrics, keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country) => {
     switch(nameMetrics) {
         case dailyCases:
-            createGraph(keys, valuesCasesDaily, nameMetrics, bar);
-            if (full) createGraph(keys, valuesCasesDaily, nameMetrics, bar, true);
+            if (state.rate.value === relative) {
+                if (country) {
+                    setPopulationCountry(urlGlobal, country, keys, valuesCasesDaily, nameMetrics, bar);
+                } else {
+                    setPopulationGlobal(urlGlobal, keys, valuesCasesDaily, nameMetrics, bar);
+                }
+            } else {
+                createGraph(keys, valuesCasesDaily, nameMetrics, bar);
+            }
             break;
         case dailyDeaths:
-            createGraph(keys, valuesDeathsDaily, nameMetrics, bar);
-            if (full) createGraph(keys, valuesDeathsDaily, nameMetrics, bar, true);
+            if (state.rate.value === relative) {
+                if (country) {
+                    setPopulationCountry(urlGlobal, country, keys, valuesDeathsDaily, nameMetrics, bar);
+                } else {
+                    setPopulationGlobal(urlGlobal, keys, valuesDeathsDaily, nameMetrics, bar);
+                }
+            } else {
+                createGraph(keys, valuesDeathsDaily, nameMetrics, bar);
+            }
             break;
         case dailyRecovered:
-            createGraph(keys, valuesRecoveredDaily, nameMetrics, bar);
-            if (full) createGraph(keys, valuesRecoveredDaily, nameMetrics, bar, true);
+            if (state.rate.value === relative) {
+                if (country) {
+                    setPopulationCountry(urlGlobal, country, keys, valuesRecoveredDaily, nameMetrics, bar);
+                } else {
+                    setPopulationGlobal(urlGlobal, keys, valuesRecoveredDaily, nameMetrics, bar);
+                }
+            } else {
+                createGraph(keys, valuesRecoveredDaily, nameMetrics, bar);
+            }
             break;
         case cumulativeCases:
-            createGraph(keys, valuesCases, nameMetrics, line);
-            if (full) createGraph(keys, valuesCases, nameMetrics, line, true);
+            if (state.rate.value === relative) {
+                if (country) {
+                    setPopulationCountry(urlGlobal, country, keys, valuesCases, nameMetrics, line);
+                } else {
+                    setPopulationGlobal(urlGlobal, keys, valuesCases, nameMetrics, line);
+                }
+            } else {
+                createGraph(keys, valuesCases, nameMetrics, line);
+            }
             break;
         case cumulativeDeaths:
-            createGraph(keys, valuesDeaths, nameMetrics, line);
-            if (full) createGraph(keys, valuesDeaths, nameMetrics, line, true);
+            if (state.rate.value === relative) {
+                if (country) {
+                    setPopulationCountry(urlGlobal, country, keys, valuesDeaths, nameMetrics, line);
+                } else {
+                    setPopulationGlobal(urlGlobal, keys, valuesDeaths, nameMetrics, line);
+                }
+            } else {
+                createGraph(keys, valuesDeaths, nameMetrics, line);
+            }
             break;
         case cumulativeRecovered:
-            createGraph(keys, valuesRecovered, nameMetrics, line);
-            if (full) createGraph(keys, valuesRecovered, nameMetrics, line, true);
+            if (state.rate.value === relative) {
+                if (country) {
+                    setPopulationCountry(urlGlobal, country, keys, valuesRecovered, nameMetrics, line);
+                } else {
+                    setPopulationGlobal(urlGlobal, keys, valuesRecovered, nameMetrics, line);
+                }
+            } else {
+                createGraph(keys, valuesRecovered, nameMetrics, line);
+            }
             break;
     }
 }
