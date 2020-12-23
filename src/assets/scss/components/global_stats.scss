@@ -5,6 +5,9 @@
     position: relative;
     z-index: 1;
     height: 300px;
+    @include resolution(tablet) {
+        height: 349px;
+    }
     overflow: auto;
     .map-rates {
         margin-left: 25px;
@@ -53,7 +56,7 @@
     .radiobuttons_show_wrapper {
         display: flex;
         justify-content: center;
-        margin: 20px 0;
+        margin: 0 0 20px 0;
         .show_radiobuttons {
             display: block;
             margin-right: 5px;
@@ -99,9 +102,9 @@
     }
 
     .popup_open {
-        position: absolute;
-        left: 5px;
-        top: 10px;
+        display: flex;
+        margin: 5px 10px;
+        cursor: pointer;
         img {
             width: 30px;
         }
@@ -141,6 +144,13 @@
 }
 
 .loc-cases {
+    height: 400px;
+    @include resolution(desktop) {
+        height: 300px;
+    }
+    @include resolution(tablet) {
+        height: 349px;
+    }
     span {
         cursor: pointer;
     }
@@ -172,16 +182,6 @@
 .simple-keyboard.myTheme1 .hg-button:active {
     background: $color-dodger-blue;
     color: $color-white;
-}
-
-.list_popup {
-    position: absolute;
-    top: 0px;
-    margin-top: 100px;
-    display: none;
-    width: 99%;
-    height: 86%;
-    background-color: #404040;
 }
 
 ::-webkit-scrollbar {

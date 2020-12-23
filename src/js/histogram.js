@@ -106,7 +106,9 @@ const setPopulationGlobal = (url, keys, value, nameMetrics, type) => {
         
         createGraph(keys, arr, nameMetrics, type);
     });
+
 }
+
 
 const checkBtn = () => {
     let nameMetricsIndicator;
