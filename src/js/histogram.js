@@ -119,7 +119,7 @@ const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesD
 
         choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
 
-        [... document.querySelectorAll('input')].forEach((input) => input.addEventListener('change', () => {
+        [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
             choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
         }));
     });
@@ -128,7 +128,7 @@ const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesD
         document.querySelector(popup).style.display = displayNone;
     });
 
-    [... document.querySelectorAll('input')].forEach((input) => input.addEventListener('change', () => {
+    [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
         choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
     }));
 }

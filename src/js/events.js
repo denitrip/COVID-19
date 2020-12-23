@@ -8,7 +8,7 @@ const statsClose = stats.querySelector('#map-stats-close');
 const legend = document.querySelector('#map-legend');
 const legendOpen = document.querySelector('#map-legend-open');
 const legendClose = legend.querySelector('#map-legend-close');
-const inputs = document.querySelectorAll('input');
+const inputs = document.querySelectorAll('.map-rates__wrapper input');
 
 const onInputChanged = (evt) => {
   //  close popups
