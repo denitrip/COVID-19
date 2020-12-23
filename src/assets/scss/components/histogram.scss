@@ -26,25 +26,6 @@
         height: 80%;
     }
 
-    // &__button {
-        
-    //     // border: none;
-    //     // color: $color-white;
-    //     // padding: 50px 20px;
-    //     // background-color: $color-transparent-white;
-    
-    //     // &:active {
-    //     //     background-color: $color-dark-grey;
-    //     // }
-        
-    //     // &:focus {
-    //     //     background-color: $color-dark-grey;
-    //     // }
-    //     & .map-rates {
-    //         margin-left: 50px;
-    //     }
-    // }
-
     &__close {
         position: absolute;
         right: 0;
@@ -75,7 +56,6 @@
         display: flex;
         justify-content: center;
         width: 100%;
-        // flex-wrap: wrap;
         flex-direction: column;
     }
 }
