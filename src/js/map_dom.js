@@ -1,6 +1,6 @@
 document.querySelector('.map').innerHTML =
   `        <h2 class="visually-hidden">Map</h2>
-  <span class="popup_open"><img src="../assets/img/open.svg" alt=""></span>
+  <span class="popup_open"><img src="./assets/img/open.svg" alt=""></span>
   <div id="map"></div>
   <div id="map-stats" class="map-stats map__popup">
     <h3 id="map-stats-country" class="map__title"></h3>

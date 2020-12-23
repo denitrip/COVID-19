@@ -82,35 +82,35 @@ const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesD
             <div class=${graphButtons}>
                 <div id="map-period-rates" class="map-rates">
                     <div class="map-rates__wrapper">
-                        <input id="cumulative" type="radio" name="period2" value="cumulative" checked="checked">
+                        <input id="cumulative" type="radio" name="period3" value="cumulative" checked="checked">
                         <label for="cumulative">Cumulative</label>
                     </div>
                     <div class="map-rates__wrapper">
-                        <input id="daily" type="radio" name="period2" value="daily">
+                        <input id="daily" type="radio" name="period3" value="daily">
                         <label for="daily">Daily</label>
                     </div>
                 </div>
                 <div id="map-status-rates" class="map-rates">
                     <div class="map-rates__wrapper">
-                        <input id="confirmed" type="radio" name="status2" value="confirmed" checked="checked">
+                        <input id="confirmed" type="radio" name="status3" value="confirmed" checked="checked">
                         <label for="confirmed">Confirmed</label>
                     </div>
                     <div class="map-rates__wrapper">
-                        <input id="recovered" type="radio" name="status2" value="recovered">
+                        <input id="recovered" type="radio" name="status3" value="recovered">
                         <label for="recovered">Recovered</label>
                     </div>
                     <div class="map-rates__wrapper">
-                        <input id="deaths" type="radio" name="status2" value="deaths">
+                        <input id="deaths" type="radio" name="status3" value="deaths">
                         <label for="deaths">Death</label>
                     </div>
                 </div>
                 <div id="map-period-rates" class="map-rates">
                     <div class="map-rates__wrapper">
-                        <input id="absolute" type="radio" name="value" value="absolute" checked="checked">
+                        <input id="absolute" type="radio" name="value3" value="absolute" checked="checked">
                         <label for="absolute">Absolute</label>
                     </div>
                     <div class="map-rates__wrapper">
-                        <input id="relative" type="radio" name="value" value="relative">
+                        <input id="relative" type="radio" name="value3" value="relative">
                         <label for="relative">Relative</label>
                     </div>
                 </div>
@@ -119,7 +119,7 @@ const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesD
 
         choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
 
-        [... document.querySelectorAll('input')].forEach((input) => input.addEventListener('change', () => {
+        [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
             choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
         }));
     });
@@ -128,7 +128,7 @@ const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesD
         document.querySelector(popup).style.display = displayNone;
     });
 
-    [... document.querySelectorAll('input')].forEach((input) => input.addEventListener('change', () => {
+    [... document.querySelectorAll('.map-rates__wrapper input')].forEach((input) => input.addEventListener('change', () => {
         choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
     }));
 }
