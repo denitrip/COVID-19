@@ -139,13 +139,43 @@
 
       </section>
       <section class="histogram">
-        <h2>Histogram</h2>
         <div class="graph">
         </div>
-        <div class="graph__selector">
-          <div class="left-arrow">&#9668</div>
-          <div class="graph__metrics">Daily Cases</div>
-          <div class="right-arrow">&#9658</div>
+        <div class="graph_radiobuttons radiobuttons">
+          <div id="map-period-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="cumulative" type="radio" name="period2" value="cumulative" checked="checked">
+              <label for="cumulative">Cumulative</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="daily" type="radio" name="period2" value="daily">
+              <label for="daily">Daily</label>
+            </div>
+          </div>
+          <div id="map-status-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="confirmed" type="radio" name="status2" value="confirmed" checked="checked">
+              <label for="confirmed">Confirmed</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="recovered" type="radio" name="status2" value="recovered">
+              <label for="recovered">Recovered</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="deaths" type="radio" name="status2" value="deaths">
+              <label for="deaths">Death</label>
+            </div>
+          </div>
+          <div id="map-period-rates" class="map-rates">
+            <div class="map-rates__wrapper">
+              <input id="absolute" type="radio" name="value" value="absolute" checked="checked">
+              <label for="absolute">Absolute</label>
+            </div>
+            <div class="map-rates__wrapper">
+              <input id="relative" type="radio" name="value" value="relative">
+              <label for="relative">Relative</label>
+            </div>
+          </div>
         </div>
         <img class="graph__full-screen" src="../assets/img/open.svg" alt="open">
       </section>

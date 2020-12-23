@@ -1,3 +1,5 @@
+import { state } from './state';
+
 const displayNone = 'none',
       displayBlock = 'block',
       bar = 'bar',
@@ -7,31 +9,25 @@ const displayNone = 'none',
       popup = '.histogram__popup',
       graphPopup = '.graph__popup',
       graphButtons = '.graph__buttons',
-      graphButton = '.graph__button',
-      graphMetrics = '.graph__metrics',
       graphClose = '.graph__close',
       graph = '.graph',
-      arrowLeft = '.left-arrow',
-      arrowRight = '.right-arrow',
-      dailyCases = 'Daily Cases',
+      dailyCases = 'Daily Confirmed',
       dailyDeaths = 'Daily Deaths',
       dailyRecovered = 'Daily Recovered',
-      cumulativeCases = 'Cumulative Cases',
+      cumulativeCases = 'Cumulative Confirmed',
       cumulativeDeaths = 'Cumulative Deaths',
       cumulativeRecovered = 'Cumulative Recovered',
-      arrayMetrics = [dailyCases, cumulativeCases, dailyDeaths, cumulativeDeaths, dailyRecovered, cumulativeRecovered],
       chart = 'myChart',
       chartFullScreen = 'myChartFullScreen',
       colorBackgroundGraph = 'rgba(255, 159, 64, 0.2)',
       colorBackgroundOpacityZero = 'rgba(255, 159, 64, 0)',
-      colorBorderGraph = 'rgba(255, 159, 64, 1)';
-      urlHistoricalGlobal = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366';
-
+      colorBorderGraph = 'rgba(255, 159, 64, 1)',
+      urlHistoricalGlobal = 'https://disease.sh/v3/covid-19/historical/all?lastdays=366',
+      urlHistoricalCountry = 'https://api.covid19api.com/total/country/';
+ 
 const setWorldGraph = (url) => {
     fetch(url).then((response) => response.json()).then((res) => {
-        const keysCases = Object.keys(res.cases),
-              keysDeaths = Object.keys(res.deaths),
-              keysRecovered = Object.keys(res.recovered),
+        const keys = Object.keys(res.cases),
               valuesCases = Object.values(res.cases),
               valuesDeaths = Object.values(res.deaths),
               valuesRecovered = Object.values(res.recovered),
@@ -39,75 +35,151 @@ const setWorldGraph = (url) => {
               valuesDeathsDaily = countDaily(valuesDeaths),
               valuesRecoveredDaily = countDaily(valuesRecovered);
 
-        createGraph(keysCases, valuesCasesDaily, dailyCases, bar, );
-
-        document.querySelector(graphFullScreen).addEventListener('click', () => {
-            document.querySelector(popupContent).innerHTML = '';
-            document.querySelector(popup).style.display = displayBlock;
-
-            document.querySelector(popupContent).innerHTML += `
-                <div class=${graphPopup.slice(1)}></div>
-                <div class=${graphButtons}>
-                    <button class=${graphButton.slice(1)}>${dailyCases}</button>
-                    <button class=${graphButton.slice(1)}>${cumulativeCases}</button>
-                    <button class=${graphButton.slice(1)}>${dailyDeaths}</button>
-                    <button class=${graphButton.slice(1)}>${cumulativeDeaths}</button>
-                    <button class=${graphButton.slice(1)}>${dailyRecovered}</button>
-                    <button class=${graphButton.slice(1)}>${cumulativeRecovered}</button>
-                </div>
-            `;
-
-            choiceIndicator(document.querySelector(graphMetrics).innerHTML, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
-            
-            document.querySelectorAll(graphButton).forEach(elem => {
-                elem.addEventListener('click', () => {
-                    choiceIndicator(elem.innerHTML, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
-                })
-            });
-        });
-
-        document.querySelector(graphClose).addEventListener('click', () => {
-            document.querySelector(popup).style.display = displayNone;
-        });
-
-        document.querySelector(arrowLeft).addEventListener('click', () => {
-            let nameMetrics = leftMetrics(document.querySelector(graphMetrics).innerHTML);
-            choiceIndicator(nameMetrics, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
-        });
-
-        document.querySelector(arrowRight).addEventListener('click', () => {
-            let nameMetrics = rightMetrics(document.querySelector(graphMetrics).innerHTML);
-            choiceIndicator(nameMetrics, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
-        });
+        ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
     });
 }
 
-const choiceIndicator = (nameMetrics, keysCases, keysDeaths, keysRecovered, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, full) => {
-    document.querySelector(graphMetrics).innerHTML = nameMetrics;
+const setCountryGraph = (url, country) => {
+    fetch(url).then((response) => response.json()).then((res) => {
+        let keys = [],
+            valuesCases = [],
+            valuesDeaths = [],
+            valuesRecovered = [],
+            valuesCasesDaily = [],
+            valuesDeathsDaily = [],
+            valuesRecoveredDaily = [];
+
+        res.forEach(elem => {
+            keys.push(elem.Date.slice(0, 10));
+            valuesCases.push(elem.Confirmed);
+            valuesDeaths.push(elem.Deaths);
+            valuesRecovered.push(elem.Recovered);
+        });
+
+        valuesCasesDaily = countDaily(valuesCases),
+        valuesDeathsDaily = countDaily(valuesDeaths),
+        valuesRecoveredDaily = countDaily(valuesRecovered);
+
+        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
+        ultimate(keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country);
+    });
+}
+
+const ultimate = (keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, country) => {
+    if (country) {
+        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
+    } else {
+        createGraph(keys, valuesCases, cumulativeCases, line);
+    }
+    
+    document.querySelector(graphFullScreen).addEventListener('click', () => {
+        
+        document.querySelector(popupContent).innerHTML = '';
+        document.querySelector(popup).style.display = displayBlock;
+
+        document.querySelector(popupContent).innerHTML += `
+            <div class=${graphPopup.slice(1)}></div>
+            <div class=${graphButtons}>
+                <div id="map-period-rates" class="map-rates">
+                    <div class="map-rates__wrapper">
+                        <input id="cumulative" type="radio" name="period2" value="cumulative" checked="checked">
+                        <label for="cumulative">Cumulative</label>
+                    </div>
+                    <div class="map-rates__wrapper">
+                        <input id="daily" type="radio" name="period2" value="daily">
+                        <label for="daily">Daily</label>
+                    </div>
+                </div>
+                <div id="map-status-rates" class="map-rates">
+                    <div class="map-rates__wrapper">
+                        <input id="confirmed" type="radio" name="status2" value="confirmed" checked="checked">
+                        <label for="confirmed">Confirmed</label>
+                    </div>
+                    <div class="map-rates__wrapper">
+                        <input id="recovered" type="radio" name="status2" value="recovered">
+                        <label for="recovered">Recovered</label>
+                    </div>
+                    <div class="map-rates__wrapper">
+                        <input id="deaths" type="radio" name="status2" value="deaths">
+                        <label for="deaths">Death</label>
+                    </div>
+                </div>
+                <div id="map-period-rates" class="map-rates">
+                    <div class="map-rates__wrapper">
+                        <input id="absolute" type="radio" name="value" value="absolute" checked="checked">
+                        <label for="absolute">Absolute</label>
+                    </div>
+                    <div class="map-rates__wrapper">
+                        <input id="relative" type="radio" name="value" value="relative">
+                        <label for="relative">Relative</label>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
+
+        [... document.querySelectorAll('input')].forEach((input) => input.addEventListener('change', () => {
+            choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, true);
+        }));
+    });
+
+    document.querySelector(graphClose).addEventListener('click', () => {
+        document.querySelector(popup).style.display = displayNone;
+    });
+
+    [... document.querySelectorAll('input')].forEach((input) => input.addEventListener('change', () => {
+        choiceIndicator(checkBtn(), keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily);
+    }));
+}
+
+const checkBtn = () => {
+    let nameMetricsIndicator;
+    if (state.rate.period === cumulativeCases.split(' ')[0].toLowerCase()) {
+        if (state.rate.status === cumulativeCases.split(' ')[1].toLowerCase()) {
+            nameMetricsIndicator = cumulativeCases;
+        } else if (state.rate.status === cumulativeDeaths.split(' ')[1].toLowerCase()) {
+            nameMetricsIndicator = cumulativeDeaths;
+        } else {
+            nameMetricsIndicator = cumulativeRecovered;
+        }
+    } else {
+        if (state.rate.status === dailyCases.split(' ')[1].toLowerCase()) {
+            nameMetricsIndicator = dailyCases;
+        } else if (state.rate.status === dailyDeaths.split(' ')[1].toLowerCase()) {
+            nameMetricsIndicator = dailyDeaths;
+        } else {
+            nameMetricsIndicator = dailyRecovered;
+        }
+    }
+    return nameMetricsIndicator;
+}
+
+const choiceIndicator = (nameMetrics, keys, valuesCases, valuesDeaths, valuesRecovered, valuesCasesDaily, valuesDeathsDaily, valuesRecoveredDaily, full) => {
     switch(nameMetrics) {
         case dailyCases:
-            createGraph(keysCases, valuesCasesDaily, nameMetrics, bar);
-            if (full) createGraph(keysCases, valuesCasesDaily, nameMetrics, bar, true);
+            createGraph(keys, valuesCasesDaily, nameMetrics, bar);
+            if (full) createGraph(keys, valuesCasesDaily, nameMetrics, bar, true);
             break;
         case dailyDeaths:
-            createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, bar);
-            if (full) createGraph(keysDeaths, valuesDeathsDaily, nameMetrics, bar, true);
+            createGraph(keys, valuesDeathsDaily, nameMetrics, bar);
+            if (full) createGraph(keys, valuesDeathsDaily, nameMetrics, bar, true);
             break;
         case dailyRecovered:
-            createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, bar);
-            if (full) createGraph(keysRecovered, valuesRecoveredDaily, nameMetrics, bar, true);
+            createGraph(keys, valuesRecoveredDaily, nameMetrics, bar);
+            if (full) createGraph(keys, valuesRecoveredDaily, nameMetrics, bar, true);
             break;
         case cumulativeCases:
-            createGraph(keysCases, valuesCases, nameMetrics, line);
-            if (full) createGraph(keysCases, valuesCases, nameMetrics, line, true);
+            createGraph(keys, valuesCases, nameMetrics, line);
+            if (full) createGraph(keys, valuesCases, nameMetrics, line, true);
             break;
         case cumulativeDeaths:
-            createGraph(keysDeaths, valuesDeaths, nameMetrics, line);
-            if (full) createGraph(keysDeaths, valuesDeaths, nameMetrics, line, true);
+            createGraph(keys, valuesDeaths, nameMetrics, line);
+            if (full) createGraph(keys, valuesDeaths, nameMetrics, line, true);
             break;
         case cumulativeRecovered:
-            createGraph(keysRecovered, valuesRecovered, nameMetrics, line);
-            if (full) createGraph(keysRecovered, valuesRecovered, nameMetrics, line, true);
+            createGraph(keys, valuesRecovered, nameMetrics, line);
+            if (full) createGraph(keys, valuesRecovered, nameMetrics, line, true);
             break;
     }
 }
@@ -122,34 +194,6 @@ const countDaily = (value) => {
         }
     });
     return valuesDaily;
-}
-
-const leftMetrics = (name) => {
-    let metric;
-    arrayMetrics.forEach((elem, index, arr) => {
-        if (elem === name) {
-            if (index !== 0) {
-                metric = arr[index - 1];
-            } else {
-                metric = arr[arr.length - 1];
-            }
-        }
-    });
-    return metric;
-}
-
-const rightMetrics = (name) => {
-    let metric;
-    arrayMetrics.forEach((elem, index, arr) => {
-        if (elem === name) {
-            if (index === arr.length - 1) {
-                metric = arr[0];
-            } else {
-                metric = arr[index + 1];
-            }
-        }
-    });
-    return metric;
 }
 
 const createGraph = (key, value, title, type, full) => {
@@ -192,6 +236,12 @@ const createGraph = (key, value, title, type, full) => {
             }
         }
     });
+}
+
+export const countryView = (country) => {
+    if (country) {
+        setCountryGraph(`${urlHistoricalCountry}${country}`, country);
+    }
 }
 
 setWorldGraph(urlHistoricalGlobal);

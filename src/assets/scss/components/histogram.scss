@@ -2,7 +2,7 @@
     width: 100%;
 
     &__selector {
-        padding: 0px 60px 10px;
+        padding: 0 60px 10px;
         display: flex;
         justify-content: space-between;
         color: $color-white;
@@ -20,28 +20,13 @@
     }
 
     &__popup {
-        width: 80%;
-        height: 50%;
-    }
-
-    &__button {
-        border: none;
-        color: $color-white;
-        padding: 10px 20px;
-        background-color: $color-transparent-white;
-    
-        &:active {
-            background-color: $color-dark-grey;
-        }
-        
-        &:focus {
-            background-color: $color-dark-grey;
-        }
+        width: 89%;
+        height: 80%;
     }
 
     &__close {
         position: absolute;
-        right: 0px;
+        right: 0;
         margin-right: 20px;
         font-size: 60px;
     
@@ -62,17 +47,17 @@
 .histogram__popup {
     position: absolute;
     z-index: 99;
-    top: 0px;
-    margin-top: 100px;
+    top: 0;
+    margin-top: 0;
     display: none;
     width: 99%;
-    height: 86%;
+    height: 100%;
     background-color: $color-tundora;
 
     &_content {
         display: flex;
         justify-content: center;
         width: 100%;
-        flex-wrap: wrap;
+        flex-direction: column;
     }
 }
