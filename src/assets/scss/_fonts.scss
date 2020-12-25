@@ -1,0 +1,33 @@
+// FONTS LOAD SECTION
+
+@mixin font($fname, $fstyle, $fweight, $furl) {
+	@font-face {
+		font-family: $fname;
+		font-style: $fstyle;
+		font-weight: $fweight;
+		// font-display: swap; // Uncomment to initially display system fonts
+		src: local($fname), url($furl) format('woff2');
+	}
+}
+
+// font-style: normal;
+// font-style: italic;
+
+/* Keyword values */
+// font-weight: normal;
+// font-weight: bold;
+
+/* Numeric keyword values */
+// font-weight: 100;
+// font-weight: 200;
+// font-weight: 300;
+// font-weight: 400;// normal
+// font-weight: 500;
+// font-weight: 600;
+// font-weight: 700;// bold
+// font-weight: 800;
+// font-weight: 900;
+
+// EXAMPLE
+//@include font('BebasRegular', normal, 400, '../fonts/BebasRegular.woff2');
+@include font('Raleway', normal, 400, '../fonts/raleway-400.woff2');

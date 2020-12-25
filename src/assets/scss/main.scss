@@ -1,0 +1,45 @@
+@import 'fonts';
+@import 'variables';
+@import '_mixins';
+@import './utils/normalize';
+@import './layouts/grid';
+
+@import './header/header';
+@import './footer/footer';
+
+// Components
+@import './components/global_stats.scss';
+@import './components/global_cases.scss';
+@import './components/histogram.scss';
+
+@import './components/map';
+@import './components/ol';
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+  min-width: 500px;
+  margin: 0;
+  padding: 0;
+  color: $color-light-grey;
+  font-family: $font-raleway;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 400;
+  text-align: center;
+  background-color: $color-black;
+}
+
+h2 {
+  font-size: 14px; /* temporary */
+}
+
+.container {
+  padding: 0 10px;
+}
+
+button {
+  cursor: pointer;
+}
